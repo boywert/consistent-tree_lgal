@@ -1,0 +1,48 @@
+v1.0:
+*) Major update to improve parallelization, especially for the first gravitational consistency stage.
+*) Fixed pair of rare bugs that connected unrelated halos together in the same tree; this affected 5 links per million (thanks to Kristin Riebe and Christoph Behrens for finding).  However, the maximum forest size should now be more manageable in many cases.
+*) New option to apply fix for Rockstar spins (affecting versions *prior* to Rockstar v0.99.9-RC3); search README for (FIX_ROCKSTAR_SPINS) usage details.
+*) Includes conversion code for generating forests in the Sussing Merger Trees format; see README for usage details.
+*) New option to limit memory usage (set LIMITED_MEMORY=1 in config file), helpful when dealing with >2048^3 boxes.  Currently, this turns off gzipping outputs (which requires forked processes to remain alive longer), and also limits the parallelization when resorting outputs (which would require more snapshots to be in memory at the same time).
+*) Experimental option for binary intermediate output formats, which reduces load/run times for large boxes; search README for INPUT_FORMAT for details.
+*) New PDF readme.
+*) Added timing info (output in OUTBASE/timing.log).
+*) Fixed bug where next_coprogenitor_df_id should have been -1 for the last progenitor at a given redshift.  (Thanks to Morgane Cousin for finding).
+
+v0.99.9.3 RC3 (6/7/2014):
+*) Consistent Trees will now ignore all duplicate scale factors in the scale file.  In addition, it will give an error if the scale file is not correctly sorted.
+*) Large halo IDs now properly printed in catalog output when using 32-bit versions of perl.
+*) Additional accretion rates and accretion times (scale factors) calculated.
+*) Now honors non-integer box sizes.
+*) Now includes AHF conversion code (beta!) from Yao-Yuan Mao.
+
+v0.99.9.2 RC2 (3/18/2013):
+*) Changed PADDING_TIMESTEPS default to 0 to fix a crash in resort_outputs.
+*) Updated Universe::Time to fix undefined value warning.
+
+v0.99.9 RC1 (3/13/2013):
+*) Additional quantities calculated (half-mass scale factor, accretion rates) in catalog output.
+*) Updates to improve handling of a>>1 simulations.
+
+v0.99.5: (Not publicly released).
+*) Additional indices (last progenitor ID, next coprogenitor ID) to help with Millennium-format conversion.
+*) New file (locations.dat) generated to assist with quickly locating trees in the output files.
+*) New file (forests.list) generated to assist with resolving parent-sub links across merger trees.
+*) Fixed a crashing problem in rare cases where velocity / position measurements were too precise in the halo finder for the merger tree code to estimate velocity / position errors properly.
+*) Fixed an issue whereby duplicate Gadget outputs at the last timestep would cause a crash when generating depth-first IDs.
+*) Adjusted last major merger to mean the last scale at which a major merger (satellite) entered the host halo.
+*) Switched to favoring the original mvir from the halo catalogs over the smoothed, mass-conserving mass.
+*) Fixed a crash due to an off-by-one error (thanks to Steven Rieder for finding!).
+*) Fixed an out-of-memory condition which occurred in resort_outputs when reading inputs becomes significantly faster than writing outputs.
+*) Fixed a bug whereby parent halos were incorrectly calculated across periodic boundaries for box sizes less than 250 Mpc/h (thanks to Steven Rieder for finding!).
+
+v0.99 (03/2012):
+*) Added support for propagating extra halo parameters through the merger trees if your halo finder supports them.
+*) Additional columns output to help conversion to Millennium formats: Breadth-first order, Depth-first order, Tree Root ID.
+*) Fixed a crashing problem if the last halo catalog did not have all descendants set to -1.
+
+v0.96.2 (12/3/2011):
+*) Updated makefiles to fix compilation problems on newer versions of Linux.
+
+v0.96.1 (10/20/2011):
+Initial public release
