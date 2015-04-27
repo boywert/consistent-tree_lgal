@@ -20,7 +20,7 @@
 
 
 #define SCALE_FACTOR_MUL 10000
-
+#define GADGET_MASS_CONVERT 1.e-10
 struct halo_tree halo_tree = {0};
 struct halo_list all_halos = {0};
 struct lgal_halo_tree lgal_halo_tree = {0};
@@ -327,18 +327,18 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
   if(halo->nexthalo)
     buffer.NextHaloInFOFgroup = (int)halo->nexthalo->id_intree;
 
-  buffer.Len = (int) round_to_int(halo->orig_mvir/PARTMASS);
-  buffer.M_Mean200 = (float) halo->mvir;
-  buffer.M_Crit200 = (float) halo->mvir;
-  buffer.M_TopHat = (float) halo->mvir;
+  buffer.Len = (int) round_to_int(halo->orig_mvir/(MASS_RES_OK/1000));
+  buffer.M_Mean200 = (float) halo->mvir*GADGET_MASS_CONVERT;
+  buffer.M_Crit200 = (float) halo->mvir*GADGET_MASS_CONVERT;
+  buffer.M_TopHat = (float) halo->mvir*GADGET_MASS_CONVERT;
   for(i=0;i<3;i++) {
     buffer.Pos[i] = (float) halo->pos[i];
     buffer.Vel[i] = (float) halo->vel[i];
-    buffer.Spin[i] = (float) halo->J[i];
+    buffer.Spin[i] = (float) halo->J[i]*GADGET_MASS_CONVERT;
   }
   buffer.VelDisp = (float) halo->vrms;
   buffer.MostBoundID = (long long) 0;
-  buffer.SnapNum = (int) halo->snap_num;
+  buffer.SnapNum = (int) output_numbers[halo->snap_num];
   buffer.FileNr = (int) filenr;
   buffer.SubhaloIndex = (int) 0;
   buffer.SubHalfMass = (float) 0;
@@ -363,7 +363,7 @@ struct lgal_halo_ids_data make_lgal_halo_ids_data(struct halo *halo, int filenr)
 #ifdef MAINLEAFID
   buffer.MainLeafID = (long long) 0;
 #endif
-  buffer.Redshift = (double) (1./halo->scale - 1.);
+  buffer.Redshift = (double) (1./output_scales[halo->snap_num] - 1.);
   buffer.PeanoKey = (int)8;
   return buffer;
 }
