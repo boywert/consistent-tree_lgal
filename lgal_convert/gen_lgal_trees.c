@@ -43,13 +43,13 @@ int main(int argc, char **argv) {
   read_outputs(&(output_scales), &(output_numbers), &(total_outputs));
   for(ii=0;ii<BOX_DIVISIONS*BOX_DIVISIONS*BOX_DIVISIONS;ii++) {
     k++;
-    if(!(ii%BOX_DIVISIONS))
+    if(!((ii+1) % BOX_DIVISIONS))
       j++;
-    if(!(ii%BOX_DIVISIONS*BOX_DIVISIONS))
+    if(!((ii+1) % BOX_DIVISIONS*BOX_DIVISIONS))
       i++;
-    k = k%BOX_DIVISIONS;
-    j = j%BOX_DIVISIONS;
-    i = i%BOX_DIVISIONS;
+    k = k % BOX_DIVISIONS;
+    j = j % BOX_DIVISIONS;
+    i = i % BOX_DIVISIONS;
     do_convert(i,j,k);
   }
   return 0;
