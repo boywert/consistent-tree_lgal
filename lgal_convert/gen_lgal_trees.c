@@ -37,6 +37,7 @@ int main(int argc, char **argv) {
     fprintf(stderr, "Usage: %s options.cfg\n", argv[0]); exit(1);
   }
   if (argc>1) grav_config(argv[1], 0);
+  i = 0;
   read_outputs(&(output_scales), &(output_numbers), &(total_outputs));
   // for(i=0;i<BOX_DIVISIONS;i++)
     for(j=0;j<BOX_DIVISIONS;j++) 
