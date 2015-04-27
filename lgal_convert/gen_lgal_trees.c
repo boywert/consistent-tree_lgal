@@ -27,11 +27,10 @@ float box_size=0;
 float max_mvir=0;
 float min_mvir=0;
 int64_t children = 0;
-
+void do_convert();
 int main(int argc, char **argv) {
-  int i,j,k,findex;
+  int i,j,k;
   int64_t total_outputs;
-  char buffer[1024];
   if (argc==1) {
     fprintf(stderr, "Consistent Trees -> LGALAXY Trees, Version %s\n", TREE_VERSION);
     fprintf(stderr, "%s.  See the LICENSE file for redistribution details.\n", TREE_COPYRIGHT);
@@ -42,10 +41,7 @@ int main(int argc, char **argv) {
   /* for(i=0;i<BOX_DIVISIONS;i++) */
   for(j=0;j<BOX_DIVISIONS;j++) {
     for(k=0;k<BOX_DIVISIONS;k++) {
-      findex = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
-      buffer[0] = '\0';
-      // sprintf(buffer,"%f",0.3);
-      printf("reading %s\n",buffer);
+      do_convert(i,j,k);
       /* read_tree(treefile); */
       /* build_lgal_tree(); */
       /* output_lgal_tree(findex); */
@@ -54,4 +50,10 @@ int main(int argc, char **argv) {
     }
   }
   return 0;
+}
+void do_convert(int i, int j, int k) {
+  int index = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
+  char buffer[1024];
+  sprintf(buffer,"%d",index);
+  printf("reading %s\n",buffer);
 }
