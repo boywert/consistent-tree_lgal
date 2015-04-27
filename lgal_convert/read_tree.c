@@ -328,7 +328,6 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
     buffer.FirstHaloInFOFgroup = (int)halo->id_intree;
   if(halo->nexthalo)
     buffer.NextHaloInFOFgroup = (int)halo->nexthalo->id_intree;
-  printf("id: %d -> %d\n",(int)halo->id_intree, buffer.FirstHaloInFOFgroup);
   buffer.Len = (int) round_to_int(halo->orig_mvir/(MASS_RES_OK/1000));
   buffer.M_Mean200 = (float) halo->mvir*GADGET_MASS_CONVERT;
   buffer.M_Crit200 = (float) halo->mvir*GADGET_MASS_CONVERT;
@@ -473,8 +472,9 @@ void build_tree() {
 	desc->prog = &(new_hl->halos[j]);
       }
       new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid);
-      new_hl->halos[j].uparent = lookup_halo_in_list(new_hl, new_hl->halos[j].upid);
-      
+      new_hl->halos[j].uparent = lookup_halo_in_list(new_hl, new_hl->halos[j].upid); 
+    }
+    for (j=0; j<new_hl->num_halos; j++) {
       if(new_hl->halos[j].uparent) {
 	if(!new_hl->halos[j].uparent->nexthalo)
 	  new_hl->halos[j].uparent->nexthalo = &(new_hl->halos[j]);
@@ -484,7 +484,7 @@ void build_tree() {
 	}
       }
     }
-  } 
+  }
 }
 
 void read_tree(char *filename) {
