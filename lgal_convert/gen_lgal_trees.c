@@ -46,11 +46,11 @@ int main(int argc, char **argv) {
 	findex = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
 	sprintf(treefile,"%s/tree_%d_%d_%d.dat",TREE_OUTBASE,i,j,k);
 	printf("reading %s\n",treefile);
-	read_tree(treefile);
-	build_lgal_tree();
-	output_lgal_tree(findex);
-	printf("%"PRId64" halos found in %s!\n", all_halos.num_halos,treefile);
-	delete_tree();
+	/* read_tree(treefile); */
+	/* build_lgal_tree(); */
+	/* output_lgal_tree(findex); */
+	/* printf("%"PRId64" halos found in %s!\n", all_halos.num_halos,treefile); */
+	/* delete_tree(); */
       }
   return 0;
 }
