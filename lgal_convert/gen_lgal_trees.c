@@ -40,7 +40,7 @@ int main(int argc, char **argv) {
   if (argc>1) grav_config(argv[1], 0);
   read_outputs(&(output_scales), &(output_numbers), &(total_outputs));
   /* for(i=0;i<BOX_DIVISIONS;i++) */
-  /*   for(j=0;j<BOX_DIVISIONS;j++) */
+    for(j=0;j<BOX_DIVISIONS;j++)
       for(k=0;k<BOX_DIVISIONS;k++) {
   	findex = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
 	sprintf(buffer,"%f",0.3);
