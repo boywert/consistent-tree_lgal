@@ -30,7 +30,6 @@ int64_t children = 0;
 void do_convert();
 int main(int argc, char **argv) {
   int i,j,k,ii,boxd;
-  int64_t total_outputs;
   if (argc==1) {
     fprintf(stderr, "Consistent Trees -> LGALAXY Trees, Version %s\n", TREE_VERSION);
     fprintf(stderr, "%s.  See the LICENSE file for redistribution details.\n", TREE_COPYRIGHT);
