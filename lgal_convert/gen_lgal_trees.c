@@ -31,7 +31,7 @@ int64_t children = 0;
 int main(int argc, char **argv) {
   int i,j,k,findex;
   int64_t total_outputs;
-  char buffer[1024] = {};
+  char *buffer;
   if (argc==1) {
     fprintf(stderr, "Consistent Trees -> LGALAXY Trees, Version %s\n", TREE_VERSION);
     fprintf(stderr, "%s.  See the LICENSE file for redistribution details.\n", TREE_COPYRIGHT);
@@ -40,9 +40,10 @@ int main(int argc, char **argv) {
   if (argc>1) grav_config(argv[1], 0);
   read_outputs(&(output_scales), &(output_numbers), &(total_outputs));
   /* for(i=0;i<BOX_DIVISIONS;i++) */
-  for(j=0;j<2;j++) {
+  for(j=0;j<BOX_DIVISIONS;j++) {
     for(k=0;k<BOX_DIVISIONS;k++) {
       findex = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
+      buffer = check_realloc(buffer,1024*sizeof(char));
       sprintf(buffer,"%f",0.3);
       printf("reading %s\n",buffer);
       /* read_tree(treefile); */
