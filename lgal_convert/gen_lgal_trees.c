@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
   k = 0;
   boxd = (int)BOX_DIVISIONS;
   read_outputs(&(output_scales), &(output_numbers), &(total_outputs));
-  for(ii=0;ii<100;ii++) {
+  for(ii=0;ii<10;ii++) {
     k++;
     if(!((ii+1) % boxd))
       j++;
