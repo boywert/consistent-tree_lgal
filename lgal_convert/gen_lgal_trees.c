@@ -44,7 +44,7 @@ int main(int argc, char **argv) {
     for(j=0;j<BOX_DIVISIONS;j++)
       for(k=0;k<BOX_DIVISIONS;k++) {
 	findex = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
-	printf("%s/tree_%d_%d_%d.dat",TREE_OUTBASE,i,j,k);
+	sprintf(treefile,"%s/tree_%d_%d_%d.dat",TREE_OUTBASE,i,j,k);
 	//printf("reading %s\n",treefile);
 	/* read_tree(treefile); */
 	/* build_lgal_tree(); */
