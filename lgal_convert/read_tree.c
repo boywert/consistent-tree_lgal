@@ -324,6 +324,8 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
     buffer.NextProgenitor = (int)halo->next_coprog->id_intree;
   if(halo->uparent)
     buffer.FirstHaloInFOFgroup = (int)halo->uparent->id_intree;
+  else
+    buffer.FirstHaloInFOFgroup = (int)halo->id_intree;
   if(halo->nexthalo)
     buffer.NextHaloInFOFgroup = (int)halo->nexthalo->id_intree;
 
@@ -358,6 +360,8 @@ struct lgal_halo_ids_data make_lgal_halo_ids_data(struct halo *halo, int filenr)
     buffer.Descendant = (long long) halo->desc->id_infile;
   if(halo->uparent)
     buffer.FirstHaloInFOFgroup = (long long) halo->uparent->id_infile;
+  else
+    buffer.FirstHaloInFOFgroup = (long long) halo->id_infile;
   if(halo->nexthalo)
     buffer.NextHaloInFOFgroup = (long long) halo->nexthalo->id_infile;
 #ifdef MAINLEAFID
