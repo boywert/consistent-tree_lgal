@@ -29,7 +29,7 @@ float min_mvir=0;
 int64_t children = 0;
 void do_convert();
 int main(int argc, char **argv) {
-  int i,j,k;
+  int i,j,k,ii;
   int64_t total_outputs;
   if (argc==1) {
     fprintf(stderr, "Consistent Trees -> LGALAXY Trees, Version %s\n", TREE_VERSION);
@@ -38,11 +38,20 @@ int main(int argc, char **argv) {
   }
   if (argc>1) grav_config(argv[1], 0);
   i = 0;
+  j = 0;
+  k = 0;
   read_outputs(&(output_scales), &(output_numbers), &(total_outputs));
-  // for(i=0;i<BOX_DIVISIONS;i++)
-    for(j=0;j<BOX_DIVISIONS;j++) 
-      for(k=0;k<BOX_DIVISIONS;k++) 
-	do_convert(i,j,k);
+  for(ii=0;ii<BOX_DIVISIONS*BOX_DIVISIONS*BOX_DIVISIONS;ii++) {
+    k++;
+    if(!(ii%BOX_DIVISIONS))
+      j++;
+    if(!(ii%BOX_DIVISIONS*BOX_DIVISIONS))
+      i++;
+    k = k%BOX_DIVISIONS;
+    j = j%BOX_DIVISIONS;
+    i = i%BOX_DIVISIONS;
+    do_convert(i,j,k);
+  }
   return 0;
 }
 void do_convert(int i, int j, int k) {
