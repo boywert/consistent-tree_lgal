@@ -477,6 +477,10 @@ void build_tree() {
     }
     for (j=0; j<new_hl->num_halos; j++) {
       if(new_hl->halos[j].uparent) {
+	if(new_hl->halos[j].uparent->uparent){
+	  printf("something wrong\n");
+	  exit(1);
+	}
 	if(!new_hl->halos[j].uparent->nexthalo)
 	  new_hl->halos[j].uparent->nexthalo = &(new_hl->halos[j]);
 	else {
@@ -484,8 +488,6 @@ void build_tree() {
 	  new_hl->halos[j].uparent->nexthalo = &(new_hl->halos[j]);
 	}
       }
-      else
-	new_hl->halos[j].uparent = &(new_hl->halos[j]);
     }
   } 
 }
