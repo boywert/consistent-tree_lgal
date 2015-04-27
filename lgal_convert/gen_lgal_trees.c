@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 void do_convert(int i, int j, int k) {
   int index = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
   char buffer[1024];
-  sprintf(buffer,"reading %d",index);
+  snprintf(buffer,1024,"reading %d",index);
   /*   read_tree(buffer); */
   /* build_lgal_tree(); */
   /* output_lgal_tree(index); */
