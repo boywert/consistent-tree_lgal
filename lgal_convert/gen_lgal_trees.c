@@ -48,9 +48,8 @@ int main(int argc, char **argv) {
 }
 void do_convert(int i, int j, int k) {
   int index = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
-  char buffer[1024];
-  sprintf(buffer,"sdsdsdsds");
-  printf("reading %s\n",buffer);
+
+  printf("reading fdfdfd");
   /*   read_tree(buffer); */
   /* build_lgal_tree(); */
   /* output_lgal_tree(index); */
