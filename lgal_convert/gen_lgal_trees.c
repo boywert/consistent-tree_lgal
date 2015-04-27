@@ -32,7 +32,7 @@ int64_t children = 0;
 int main(int argc, char **argv) {
   int i,j,k,findex;
   int64_t total_outputs;
-  char buffer[1024],treefile[1024];
+  char treefile[1024];
   if (argc==1) {
     fprintf(stderr, "Consistent Trees -> LGALAXY Trees, Version %s\n", TREE_VERSION);
     fprintf(stderr, "%s.  See the LICENSE file for redistribution details.\n", TREE_COPYRIGHT);
@@ -49,7 +49,7 @@ int main(int argc, char **argv) {
 	build_lgal_tree();
 	output_lgal_tree(findex);
 	printf("%"PRId64" halos found in %s!\n", all_halos.num_halos,treefile);
-	delete_tree()
+	delete_tree();
       }
   return 0;
 }
