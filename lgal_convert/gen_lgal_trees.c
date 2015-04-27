@@ -38,7 +38,7 @@ int main(int argc, char **argv) {
   }
   if (argc>1) grav_config(argv[1], 0);
   read_outputs(&(output_scales), &(output_numbers), &(total_outputs));
-  for(i=0;i<BOX_DIVISIONS;i++)
+  // for(i=0;i<BOX_DIVISIONS;i++)
     for(j=0;j<BOX_DIVISIONS;j++) 
       for(k=0;k<BOX_DIVISIONS;k++) 
 	do_convert(i,j,k);
