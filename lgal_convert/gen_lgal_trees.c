@@ -48,10 +48,9 @@ int main(int argc, char **argv) {
 }
 void do_convert(int i, int j, int k) {
   int index = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
-  char *buffer;
-  buffer = malloc(1024*sizeof(char));
-  snprintf(buffer,1024,"reading %d",index);
-  free(buffer);
+  char buffer[1024];
+  snprintf(buffer,1024,"%s/tree_%d_%d_%d.dat",TREE_OUTBASE,i,j,k);
+  printf("%s\n",buffer);
   /*   read_tree(buffer); */
   /* build_lgal_tree(); */
   /* output_lgal_tree(index); */
