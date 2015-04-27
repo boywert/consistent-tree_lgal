@@ -326,11 +326,9 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
     buffer.FirstHaloInFOFgroup = (int)halo->uparent->id_intree;
   else
     buffer.FirstHaloInFOFgroup = (int)halo->id_intree;
-  if(buffer.FirstHaloInFOFgroup == -1)
-    printf("wrong wrong\n");
   if(halo->nexthalo)
     buffer.NextHaloInFOFgroup = (int)halo->nexthalo->id_intree;
-
+  printf("id: %d -> %d\n",(int)halo->id_intree, buffer.FirstHaloInFOFgroup);
   buffer.Len = (int) round_to_int(halo->orig_mvir/(MASS_RES_OK/1000));
   buffer.M_Mean200 = (float) halo->mvir*GADGET_MASS_CONVERT;
   buffer.M_Crit200 = (float) halo->mvir*GADGET_MASS_CONVERT;
