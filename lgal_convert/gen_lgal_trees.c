@@ -31,7 +31,7 @@ int64_t children = 0;
 int main(int argc, char **argv) {
   int i,j,k,findex;
   int64_t total_outputs;
-  char buffer[1024];
+  char buffer[1024] = {};
   if (argc==1) {
     fprintf(stderr, "Consistent Trees -> LGALAXY Trees, Version %s\n", TREE_VERSION);
     fprintf(stderr, "%s.  See the LICENSE file for redistribution details.\n", TREE_COPYRIGHT);
