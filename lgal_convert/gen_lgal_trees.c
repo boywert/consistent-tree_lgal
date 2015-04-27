@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
   for(j=0;j<BOX_DIVISIONS;j++) {
     for(k=0;k<BOX_DIVISIONS;k++) {
       findex = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
-      buffer = check_realloc(buffer,1024*sizeof(char));
+      buffer = check_realloc(buffer,1024*sizeof(char),"allocate buffer string");
       sprintf(buffer,"%f",0.3);
       printf("reading %s\n",buffer);
       /* read_tree(treefile); */
