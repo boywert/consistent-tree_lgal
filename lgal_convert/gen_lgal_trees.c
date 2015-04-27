@@ -30,9 +30,9 @@ float max_mvir=0;
 float min_mvir=0;
 int64_t children = 0;
 int main(int argc, char **argv) {
-  int i,j,k;
+  int i,j,k,findex;
   int64_t total_outputs;
-  char buffer[1024],filename[1024];
+  char buffer[1024],treefile[1024];
   if (argc==1) {
     fprintf(stderr, "Consistent Trees -> LGALAXY Trees, Version %s\n", TREE_VERSION);
     fprintf(stderr, "%s.  See the LICENSE file for redistribution details.\n", TREE_COPYRIGHT);
@@ -40,12 +40,16 @@ int main(int argc, char **argv) {
   }
   if (argc>1) grav_config(argv[1], 0);
   read_outputs(&(output_scales), &(output_numbers), &(total_outputs));
-  for(i=0;i<total_outputs;i++) {
-    printf("i = %d %d %f\n",i,(int)output_numbers[i],output_scales[i]);
-  }
-  /* read_tree("/Volumes/Data/Work/consistent_tree_sample/tree_0_0_0.dat"); */
-  /* build_lgal_tree(); */
-  /* output_lgal_tree("/Volumes/Data/Work/consistent_tree_sample/tree_0.dat"); */
-  /* printf("%"PRId64" halos found in tree_0_0_0.dat!\n", all_halos.num_halos); */
+  for(i=0;i<BOX_DIVISIONS;i++)
+    for(j=0;j<BOX_DIVISIONS;j++)
+      for(k=0;k<BOX_DIVISIONS;k++) {
+	findex = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
+	sprintf(treefile,"%s/tree_%d_%d_%d.dat",TREE_OUTBASE,i,j,k);
+	read_tree(treefile);
+	build_lgal_tree();
+	output_lgal_tree(findex);
+	printf("%"PRId64" halos found in %s!\n", all_halos.num_halos,treefile);
+	delete_tree()
+      }
   return 0;
 }
