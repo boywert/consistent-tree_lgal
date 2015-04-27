@@ -484,6 +484,8 @@ void build_tree() {
 	  new_hl->halos[j].uparent->nexthalo = &(new_hl->halos[j]);
 	}
       }
+      else
+	new_hl->halos[j].uparent = &(new_hl->halos[j]);
     }
   } 
 }
