@@ -37,22 +37,13 @@ int main(int argc, char **argv) {
     fprintf(stderr, "Usage: %s options.cfg\n", argv[0]); exit(1);
   }
   if (argc>1) grav_config(argv[1], 0);
-  i = 0;
-  j = 0;
-  k = 0;
-  boxd = (int)BOX_DIVISIONS;
+
   read_outputs(&(output_scales), &(output_numbers), &(total_outputs));
-  for(ii=0;ii<10;ii++) {
-    k++;
-    if(!((ii+1) % boxd))
-      j++;
-    if(!((ii+1) % boxd*boxd))
-      i++;
-    k = k % boxd;
-    j = j % boxd;
-    i = i % boxd;
-    do_convert(i,j,k);
-  }
+
+  for(i=0;i<BOX_DIVISIONS;i++)
+    for(j=0;j<BOX_DIVISIONS;j++)
+      for(k=0;k<BOX_DIVISIONS;k++)
+	do_convert(i,j,k);
   return 0;
 }
 void do_convert(int i, int j, int k) {
