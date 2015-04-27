@@ -31,7 +31,7 @@ int64_t children = 0;
 int main(int argc, char **argv) {
   int i,j,k,findex;
   int64_t total_outputs;
-  char *buffer;
+  char buffer[1024];
   if (argc==1) {
     fprintf(stderr, "Consistent Trees -> LGALAXY Trees, Version %s\n", TREE_VERSION);
     fprintf(stderr, "%s.  See the LICENSE file for redistribution details.\n", TREE_COPYRIGHT);
@@ -43,7 +43,7 @@ int main(int argc, char **argv) {
   for(j=0;j<BOX_DIVISIONS;j++) {
     for(k=0;k<BOX_DIVISIONS;k++) {
       findex = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
-      buffer = check_realloc(buffer,1024*sizeof(char),"allocate buffer string");
+      buffer[0] = '\0';
       sprintf(buffer,"%f",0.3);
       printf("reading %s\n",buffer);
       /* read_tree(treefile); */
