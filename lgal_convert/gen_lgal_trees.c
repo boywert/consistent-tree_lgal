@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <inttypes.h>
 #include "read_tree.h"
-#include <stdio.h>
 #include <stdlib.h>
 #include <inttypes.h>
 #include <string.h>
@@ -12,7 +11,6 @@
 #include "grav_config.h"
 #include "check_syscalls.h"
 #include "masses.h"
-#include "halo_io.h"
 #include "resort_outputs.h"
 #ifndef NO_FORK
 #include <sys/wait.h>
@@ -29,6 +27,7 @@ float box_size=0;
 float max_mvir=0;
 float min_mvir=0;
 int64_t children = 0;
+
 int main(int argc, char **argv) {
   int i,j,k,findex;
   int64_t total_outputs;
@@ -44,7 +43,7 @@ int main(int argc, char **argv) {
     for(j=0;j<BOX_DIVISIONS;j++)
       for(k=0;k<BOX_DIVISIONS;k++) {
 	findex = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
-	sprintf(buffer,"tree_%d_%d_%d.dat",i,j,k);
+	sprintf(buffer,"tree.dat");
 	//printf("reading %s\n",treefile);
 	/* read_tree(treefile); */
 	/* build_lgal_tree(); */
