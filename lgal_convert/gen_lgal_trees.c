@@ -49,7 +49,6 @@ int main(int argc, char **argv) {
 void do_convert(int i, int j, int k) {
   int index = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
   char buffer[1024];
-  int j = 0;
   sprintf(buffer,"%d",j);
   printf("reading %s\n",buffer);
   /*   read_tree(buffer); */
