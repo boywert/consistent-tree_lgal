@@ -39,10 +39,10 @@ int main(int argc, char **argv) {
   }
   if (argc>1) grav_config(argv[1], 0);
   read_outputs(&(output_scales), &(output_numbers), &(total_outputs));
-  for(i=0;i<BOX_DIVISIONS;i++)
-    for(j=0;j<BOX_DIVISIONS;j++)
-      for(k=0;k<BOX_DIVISIONS;k++) {
-	findex = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
+  /* for(i=0;i<BOX_DIVISIONS;i++) */
+  /*   for(j=0;j<BOX_DIVISIONS;j++) */
+  /*     for(k=0;k<BOX_DIVISIONS;k++) { */
+  /* 	findex = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k; */
 	sprintf(buffer,"%f",0.3);
 	printf("reading %s\n",buffer);
 	/* read_tree(treefile); */
@@ -50,6 +50,6 @@ int main(int argc, char **argv) {
 	/* output_lgal_tree(findex); */
 	/* printf("%"PRId64" halos found in %s!\n", all_halos.num_halos,treefile); */
 	/* delete_tree(); */
-      }
+      /* } */
   return 0;
 }
