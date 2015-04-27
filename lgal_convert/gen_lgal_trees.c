@@ -18,7 +18,7 @@
 #include <unistd.h>
 #endif /* NO_FORK */
 #include "version.h"
-
+#include <math.h>
 
 struct halo_stash now={0}, evolved = {0};
 int64_t *forest_list = NULL;
