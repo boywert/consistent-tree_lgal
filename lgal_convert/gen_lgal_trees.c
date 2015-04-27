@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
   k = 0;
   boxd = (int)BOX_DIVISIONS;
   read_outputs(&(output_scales), &(output_numbers), &(total_outputs));
-  for(ii=0;ii<boxd*boxd*boxd;ii++) {
+  for(ii=0;ii<100;ii++) {
     k++;
     if(!((ii+1) % boxd))
       j++;
@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
 void do_convert(int i, int j, int k) {
   int index = i*BOX_DIVISIONS*BOX_DIVISIONS+j*BOX_DIVISIONS+k;
   char buffer[1024];
-  sprintf(buffer,"fsdf");
+  sprintf(buffer,"%d",index);
   printf("reading %s\n",buffer);
   /*   read_tree(buffer); */
   /* build_lgal_tree(); */
