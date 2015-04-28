@@ -481,7 +481,7 @@ void build_tree() {
       check = 0;
       for (j=0; j<new_hl->num_halos; j++) {
 	if(new_hl->halos[j].parent) {
-	  while(new_hl->halos[j].parent->parent){
+	  while(new_hl->halos[j].parent->parent) {
 	    check = 1;
 	    printf("%d step up\n",round);
 	    new_hl->halos[j].parent = new_hl->halos[j].parent->parent;
