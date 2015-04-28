@@ -476,23 +476,14 @@ void build_tree() {
       new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid);
       new_hl->halos[j].uparent = lookup_halo_in_list(new_hl, new_hl->halos[j].upid);
     }
-    
+    int round = 0;
     do {
       check = 0;
       for (j=0; j<new_hl->num_halos; j++) {
 	if(new_hl->halos[j].parent) {
 	  while(new_hl->halos[j].parent->parent){
 	    check = 1;
-	    printf("1 step up\n");
-	    new_hl->halos[j].parent = new_hl->halos[j].parent->parent;
-	  }
-	}
-      }
-      for (j=0; j<new_hl->num_halos; j++) {
-	if(new_hl->halos[j].parent) {
-	  while(new_hl->halos[j].parent->parent){
-	    check = 1;
-	    printf("2 step up\n");
+	    printf("%d step up\n",round);
 	    new_hl->halos[j].parent = new_hl->halos[j].parent->parent;
 	  }
 	}
