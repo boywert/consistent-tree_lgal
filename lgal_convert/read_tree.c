@@ -412,7 +412,7 @@ void output_lgal_tree(int filenr) {
   buffer = (int) lgal_halo_tree.num_trees;
   fwrite(&buffer,sizeof(int),1,fp);
   fclose(fp);
-  sprintf(str,"%s/treedata/trees_dbids_%03d.%d",TREE_OUTBASE,(int)output_numbers[total_outputs-1],filenr);
+  sprintf(str,"%s/treedata/tree_dbids_%03d.%d",TREE_OUTBASE,(int)output_numbers[total_outputs-1],filenr);
   fp = fopen(str,"wb");
   for(i=0;i<lgal_halo_tree.num_trees;i++) {
     if(lgal_halo_tree.num_halos_tree[i]) {
