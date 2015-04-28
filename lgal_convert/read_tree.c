@@ -489,8 +489,21 @@ void build_tree() {
 	}
       }
       round++;
-    } while(check);      
-
+    } while(check);
+    round = 1;
+    do {
+      check = 0;
+      for (j=0; j<new_hl->num_halos; j++) {
+	if(new_hl->halos[j].parent) {
+	  while(new_hl->halos[j].parent->parent) {
+	    check = 1;
+	    printf("%d step up\n",round);
+	    new_hl->halos[j].parent = new_hl->halos[j].parent->parent;
+	  }
+	}
+      }
+      round++;
+    } while(check);  
     for (j=0; j<new_hl->num_halos; j++) {
       new_hl->halos[j].uparent = new_hl->halos[j].parent;
       if(new_hl->halos[j].uparent) {
