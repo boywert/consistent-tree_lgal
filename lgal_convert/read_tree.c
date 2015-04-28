@@ -483,7 +483,7 @@ void build_tree() {
 	if(new_hl->halos[j].uparent) {
 	  while(new_hl->halos[j].uparent->uparent){
 	    check = 1;
-	    printf("step up\n");
+	    printf("1 step up\n");
 	    new_hl->halos[j].uparent = new_hl->halos[j].uparent->uparent;
 	  }
 	}
@@ -492,7 +492,7 @@ void build_tree() {
 	if(new_hl->halos[j].uparent) {
 	  while(new_hl->halos[j].uparent->uparent){
 	    check = 1;
-	    printf("step up\n");
+	    printf("2 step up\n");
 	    new_hl->halos[j].uparent = new_hl->halos[j].uparent->uparent;
 	  }
 	}
