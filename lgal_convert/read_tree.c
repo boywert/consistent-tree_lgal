@@ -431,6 +431,7 @@ void output_lgal_tree(int filenr) {
 }
 void build_tree() {
   int64_t i, j, start;
+  int check;
   struct halo_list *last_hl = 0, *new_hl;
   struct halo *desc;
   memset(&halo_tree, 0, sizeof(struct halo_tree));
@@ -475,13 +476,18 @@ void build_tree() {
       new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid);
       new_hl->halos[j].uparent = lookup_halo_in_list(new_hl, new_hl->halos[j].upid);
     }
-    for (j=0; j<new_hl->num_halos; j++) {
-      if(new_hl->halos[j].uparent) 
-	while(new_hl->halos[j].uparent->uparent){
-	  printf("step up\n");
-	  new_hl->halos[j].uparent = new_hl->halos[j].uparent->uparent;
-	}
-    }
+    
+    do {
+      check = 0;
+      for (j=0; j<new_hl->num_halos; j++) {
+	if(new_hl->halos[j].uparent)
+	  check = 1;
+	  while(new_hl->halos[j].uparent->uparent){
+	    printf("step up\n");
+	    new_hl->halos[j].uparent = new_hl->halos[j].uparent->uparent;
+	  }
+      }
+    } while(check);
     for (j=0; j<new_hl->num_halos; j++) {
       if(new_hl->halos[j].uparent) {
 	if(!new_hl->halos[j].uparent->nexthalo)
