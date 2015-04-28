@@ -482,7 +482,6 @@ void build_tree() {
     new_hl = &(halo_tree.halo_lists[i]);
     round = 0;
     do {
-      printf("Checking round %d\n",round);
       check = 0;
       for (j=0; j<new_hl->num_halos; j++) {
 	if(new_hl->halos[j].parent) {
