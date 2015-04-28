@@ -480,25 +480,27 @@ void build_tree() {
     do {
       check = 0;
       for (j=0; j<new_hl->num_halos; j++) {
-	if(new_hl->halos[j].uparent) {
-	  while(new_hl->halos[j].uparent->uparent){
+	if(new_hl->halos[j].parent) {
+	  while(new_hl->halos[j].parent->parent){
 	    check = 1;
 	    printf("1 step up\n");
-	    new_hl->halos[j].uparent = new_hl->halos[j].uparent->uparent;
+	    new_hl->halos[j].parent = new_hl->halos[j].parent->parent;
 	  }
 	}
       }
       for (j=0; j<new_hl->num_halos; j++) {
-	if(new_hl->halos[j].uparent) {
-	  while(new_hl->halos[j].uparent->uparent){
+	if(new_hl->halos[j].parent) {
+	  while(new_hl->halos[j].parent->parent){
 	    check = 1;
 	    printf("2 step up\n");
-	    new_hl->halos[j].uparent = new_hl->halos[j].uparent->uparent;
+	    new_hl->halos[j].parent = new_hl->halos[j].parent->parent;
 	  }
 	}
       }
-    } while(check);
+    } while(check);      
+
     for (j=0; j<new_hl->num_halos; j++) {
+      new_hl->halos[j].uparent = new_hl->halos[j].parent;
       if(new_hl->halos[j].uparent) {
 	if(!new_hl->halos[j].uparent->nexthalo)
 	  new_hl->halos[j].uparent->nexthalo = &(new_hl->halos[j]);
