@@ -488,6 +488,7 @@ void build_tree() {
 	  }
 	}
       }
+      round++;
     } while(check);      
 
     for (j=0; j<new_hl->num_halos; j++) {
