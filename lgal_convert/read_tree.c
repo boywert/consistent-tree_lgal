@@ -558,7 +558,7 @@ void read_tree(char *filename) {
     h.nexthalo_intree = 0;
     // h.mvir = h.orig_mvir;
     if(h.spin == 0.)
-      printf("numprog = %d\n",h.numprog);
+      printf("numprog = %d\n",h.num_prog);
     h.accu_mass = h.mvir;
     if (!(all_halos.num_halos%3000))
       all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+3000), "Allocating Halos.");
