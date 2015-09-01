@@ -4,7 +4,7 @@ EXTRA_SUPPORT=$(SUPPORT) read_config.c grav_config.c
 OFLAGS = -lm -O -std=c99
 DEBUGFLAGS = -lm -g -O -std=c99
 PROFFLAGS = -lm -g -pg -O2 -std=c99
-#CC = gcc-mp-4.8
+CC = mpicc
 
 all:
 	@make reg EXTRA_FLAGS="$(OFLAGS)"
