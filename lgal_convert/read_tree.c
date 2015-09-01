@@ -558,7 +558,7 @@ void read_tree(char *filename) {
     h.nexthalo_intree = 0;
     // h.mvir = h.orig_mvir;
     if(h.spin == 0.) {
-      countj0++;
+      printf("parent = %"PRId64"\n",h.pid);
     }
     h.accu_mass = h.mvir;
     if (!(all_halos.num_halos%3000))
@@ -568,7 +568,7 @@ void read_tree(char *filename) {
     all_halos.num_halos++;
   }
   fclose(input);
-  printf("j = 0 fraction = %"PRId64"/%"PRId64"\n",countj0,all_halos.num_halos);
+
 
   all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*all_halos.num_halos, "Allocating Halos.");
   build_tree();
