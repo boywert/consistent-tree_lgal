@@ -339,7 +339,7 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
   for(i=0;i<3;i++) {
     buffer.Pos[i] = (float) halo->pos[i];
     buffer.Vel[i] = (float) halo->vel[i];
-    buffer.Spin[i] = (float) halo->J[i]*GADGET_MASS_CONVERT;
+    buffer.Spin[i] = (float) (halo->J[i]/halo->mvir);
   }
   buffer.Vmax = (float) halo->vmax;
   buffer.VelDisp = (float) halo->vrms;
