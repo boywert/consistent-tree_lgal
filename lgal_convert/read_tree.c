@@ -340,8 +340,9 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
     buffer.Pos[i] = (float) halo->pos[i];
     buffer.Vel[i] = (float) halo->vel[i];
     buffer.Spin[i] = (float) (halo->J[i]/halo->mvir);
-    printf("Spin[%d] = %f = %f / %f\n", i, buffer.Spin[i],halo->J[i],halo->mvir);
   }
+  if(buffer.Spin[0] == 0. && buffer.Spin[1] == 0. && buffer.Spin[2] == 0.)
+    printf("Spin %f %f %f\n",buffer.Spin[0],buffer.Spin[1],buffer.Spin[2]);
   buffer.Vmax = (float) halo->vmax;
   buffer.VelDisp = (float) halo->vrms;
   buffer.MostBoundID = (long long) 0;
