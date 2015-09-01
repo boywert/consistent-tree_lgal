@@ -184,13 +184,16 @@ void tree_construct(struct halo *halo, int64_t treenr) {
 }
 
 long long findlastprogenitorid(struct halo *halo) {
-  if(halo->prog)
+  long long idinfile;
+  if(halo->prog) {
     if(halo->next_coprog)
-      return (long long)halo->next_coprog->id_infile -1;
+      idinfile = (long long)halo->next_coprog->id_infile-1;
     else
-      return (long long)lgal_halo_tree.num_halos_tree[halo->treenr] - 1;
+      idinfile = (long long)lgal_halo_tree.num_halos_tree[halo->treenr] - 1;
+    return (long long) 
+  }
   else
-    return (long long)halo->id_infile;
+    return (long long)halo->id;
 }
 
 void movetree(int64_t tar, int64_t src) {
@@ -338,6 +341,7 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
     buffer.Vel[i] = (float) halo->vel[i];
     buffer.Spin[i] = (float) halo->J[i]*GADGET_MASS_CONVERT;
   }
+  buffer.Vmax = (float) halo->vmax;
   buffer.VelDisp = (float) halo->vrms;
   buffer.MostBoundID = (long long) 0;
   buffer.SnapNum = (int) output_numbers[halo->snap_num];
@@ -352,18 +356,18 @@ struct lgal_halo_ids_data make_lgal_halo_ids_data(struct halo *halo, int filenr)
   buffer.HaloID = (long long) halo->id;
   buffer.FileTreeNr = (long long) filenr;
   if(halo->prog)
-    buffer.FirstProgenitor = (long long) halo->prog->id_infile;
+    buffer.FirstProgenitor = (long long) halo->prog->id;
   buffer.LastProgenitor = findlastprogenitorid(halo);
   if(halo->nexthalo)
-    buffer.NextProgenitor = (long long) halo->nexthalo->id_infile;
+    buffer.NextProgenitor = (long long) halo->nexthalo->id;
   if(halo->desc)
-    buffer.Descendant = (long long) halo->desc->id_infile;
+    buffer.Descendant = (long long) halo->desc->id;
   if(halo->uparent)
-    buffer.FirstHaloInFOFgroup = (long long) halo->uparent->id_infile;
+    buffer.FirstHaloInFOFgroup = (long long) halo->uparent->id;
   else
-    buffer.FirstHaloInFOFgroup = (long long) halo->id_infile;
+    buffer.FirstHaloInFOFgroup = (long long) halo->id;
   if(halo->nexthalo)
-    buffer.NextHaloInFOFgroup = (long long) halo->nexthalo->id_infile;
+    buffer.NextHaloInFOFgroup = (long long) halo->nexthalo->id;
 #ifdef MAINLEAFID
   buffer.MainLeafID = (long long) 0;
 #endif
