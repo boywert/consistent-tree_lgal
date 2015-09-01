@@ -19,6 +19,7 @@
 #endif /* NO_FORK */
 #include "version.h"
 #include <math.h>
+#include <mpi.h>
 
 struct halo_stash now={0}, evolved = {0};
 int64_t *forest_list = NULL;
@@ -30,6 +31,10 @@ int64_t children = 0;
 void do_convert();
 int main(int argc, char **argv) {
   int i,j,k,ii,boxd;
+  int ierr,rank,size;
+  int mark;
+  ierr = MPI_Init(&argc, &argv);
+
   if (argc==1) {
     fprintf(stderr, "Consistent Trees -> LGALAXY Trees, Version %s\n", TREE_VERSION);
     fprintf(stderr, "%s.  See the LICENSE file for redistribution details.\n", TREE_COPYRIGHT);
@@ -39,10 +44,18 @@ int main(int argc, char **argv) {
 
   read_outputs(&(output_scales), &(output_numbers), &(total_outputs));
 
-  for(i=0;i<BOX_DIVISIONS;i++)
-    for(j=0;j<BOX_DIVISIONS;j++)
-      for(k=0;k<BOX_DIVISIONS;k++)
-	do_convert(i,j,k);
+  ierr = MPI_Comm_rank(MPI_COMM_WORLD, &rank);
+  ierr = MPI_Comm_size(MPI_COMM_WORLD, &size);
+  mark = rank;
+  while(mark < BOX_DIVISIONS*BOX_DIVISIONS*BOX_DIVISIONS) {
+    i = mark/(BOX_DIVISIONS*BOX_DIVISIONS);
+    j = (mark - i*BOX_DIVISIONS*BOX_DIVISIONS)/BOX_DIVISIONS;
+    k = (mark - i*BOX_DIVISIONS*BOX_DIVISIONS - j*BOX_DIVISIONS);
+    do_convert(i,j,k)
+    mark += size;
+  }
+          
+  ierr = MPI_Finalize();
   return 0;
 }
 void do_convert(int i, int j, int k) {
