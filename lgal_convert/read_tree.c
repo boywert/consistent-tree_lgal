@@ -546,6 +546,7 @@ void read_tree(char *filename) {
 
   for (n=0; n<NUM_INPUTS; n++) types[n] = stypes[n];
   input = check_fopen(filename, "r");
+  int64_t countj0 = 0;
   while (fgets(buffer, 1024, input)) {
     if (buffer[0] == '#') continue;
     n = stringparse(buffer, data, (enum parsetype *)types, NUM_INPUTS);
@@ -556,8 +557,10 @@ void read_tree(char *filename) {
     h.nexthalo = 0;
     h.nexthalo_intree = 0;
     // h.mvir = h.orig_mvir;
-    if(h.spin == 0.)
+    if(h.spin == 0.) {
       printf("spin = %0.8f\n",h.spin);
+      countj0++;
+    }
     h.accu_mass = h.mvir;
     if (!(all_halos.num_halos%3000))
       all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+3000), "Allocating Halos.");
