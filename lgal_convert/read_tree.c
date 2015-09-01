@@ -190,7 +190,7 @@ long long findlastprogenitorid(struct halo *halo) {
       idinfile = (long long)halo->next_coprog->id_infile-1;
     else
       idinfile = (long long)lgal_halo_tree.num_halos_tree[halo->treenr] - 1;
-    return (long long) 
+    return (long long) idinfile ;
   }
   else
     return (long long)halo->id;
