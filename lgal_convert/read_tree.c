@@ -211,14 +211,12 @@ void movetree(int64_t tar, int64_t src) {
   cur_halo->id_intree = count_halo;
   count_halo++;
   cur_halo = cur_halo->nexthalo_intree;
-  if(h.spin > 0.) {
     
-    while(cur_halo){
-      cur_halo->treenr = tar;
-      cur_halo->id_intree = count_halo;
-      count_halo++;
-      cur_halo = cur_halo->nexthalo_intree;
-    }
+  while(cur_halo){
+    cur_halo->treenr = tar;
+    cur_halo->id_intree = count_halo;
+    count_halo++;
+    cur_halo = cur_halo->nexthalo_intree;
   }
   if(count_halo != lgal_halo_tree.num_halos_tree[tar]) {
     printf("count = %" PRId64 " record = %" PRId64 "\n",count_halo, lgal_halo_tree.num_halos_tree[tar]);
@@ -561,13 +559,14 @@ void read_tree(char *filename) {
     h.nexthalo_intree = 0;
     // h.mvir = h.orig_mvir;
     h.accu_mass = h.mvir;
-    if (!(all_halos.num_halos%1000000)) {
-      printf("Allocating halos %" PRId64 "\n",all_halos.num_halos);
-      all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+1000000), "Allocating Halos.");
+    if(h.spin > 0.) {
+      if (!(all_halos.num_halos%1000000)) {
+	printf("Allocating halos %" PRId64 "\n",all_halos.num_halos);
+	all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+1000000), "Allocating Halos.");
+      }
+      all_halos.halos[all_halos.num_halos] = h;
+      all_halos.num_halos++;
     }
-    all_halos.halos[all_halos.num_halos] = h;
-    all_halos.num_halos++;
-    
   }
   fclose(input);
 
