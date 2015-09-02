@@ -211,12 +211,14 @@ void movetree(int64_t tar, int64_t src) {
   cur_halo->id_intree = count_halo;
   count_halo++;
   cur_halo = cur_halo->nexthalo_intree;
-  while(cur_halo){
-    cur_halo->treenr = tar;
-    cur_halo->id_intree = count_halo;
-    count_halo++;
-    cur_halo = cur_halo->nexthalo_intree;
+  if(h.spin > 0.) {
     
+    while(cur_halo){
+      cur_halo->treenr = tar;
+      cur_halo->id_intree = count_halo;
+      count_halo++;
+      cur_halo = cur_halo->nexthalo_intree;
+    }
   }
   if(count_halo != lgal_halo_tree.num_halos_tree[tar]) {
     printf("count = %" PRId64 " record = %" PRId64 "\n",count_halo, lgal_halo_tree.num_halos_tree[tar]);
