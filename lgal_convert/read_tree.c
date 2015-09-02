@@ -465,8 +465,8 @@ void build_tree() {
   }
   for (j=0; j<last_hl->num_halos; j++) {
     last_hl->halos[j].uparent = last_hl->halos[j].uparent;
-    while(last_hl->halos[j].uparent)
-      last_hl->halos[j].uparent = last_hl->halos[j].uparent->parent;
+    /* while(last_hl->halos[j].uparent) */
+    /*   last_hl->halos[j].uparent = last_hl->halos[j].uparent->parent; */
   }
   for (i=1; i<halo_tree.num_lists; i++) {
     last_hl = &(halo_tree.halo_lists[i-1]);
@@ -485,11 +485,12 @@ void build_tree() {
     }
     for(j=0; j<new_hl->num_halos; j++) {
       new_hl->halos[j].uparent = new_hl->halos[j].uparent;
-      while(new_hl->halos[j].uparent)
-	new_hl->halos[j].uparent = new_hl->halos[j].uparent->parent;
+      /* while(new_hl->halos[j].uparent) */
+      /* 	new_hl->halos[j].uparent = new_hl->halos[j].uparent->parent; */
     }   
   }
-
+  
+  /* Make one level-parenting system - L-Galaxies */
   for (i=0; i<halo_tree.num_lists; i++) {
     new_hl = &(halo_tree.halo_lists[i]);
     round = 0;
