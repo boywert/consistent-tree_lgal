@@ -214,7 +214,6 @@ void movetree(int64_t tar, int64_t src) {
   while(cur_halo){
     cur_halo->treenr = tar;
     cur_halo->id_intree = count_halo;
-    printf("spin = %f\n",cur_halo->spin);
     count_halo++;
     cur_halo = cur_halo->nexthalo_intree;
     
