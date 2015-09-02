@@ -8,7 +8,10 @@ CC = mpicc
 
 all:
 	@make reg EXTRA_FLAGS="$(OFLAGS)"
-
+prof:
+	@make reg EXTRA_FLAGS="$(PROFFLAGS)"
+no-periodic:
+	@make reg EXTRA_FLAGS="$(OFLAGS) -DNO_PERIODIC" NP="_no_periodic"
 debug:
 	@make reg EXTRA_FLAGS="$(DEBUGFLAGS)"
 
