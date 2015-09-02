@@ -464,7 +464,7 @@ void build_tree() {
     last_hl->halos[j].desc = 0;
   }
   for (j=0; j<last_hl->num_halos; j++) {
-    last_hl->halos[j].uparent = last_hl->halos[j].uparent;
+    last_hl->halos[j].uparent = last_hl->halos[j].parent;
     /* while(last_hl->halos[j].uparent) */
     /*   last_hl->halos[j].uparent = last_hl->halos[j].uparent->parent; */
   }
@@ -484,7 +484,7 @@ void build_tree() {
       new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid);
     }
     for(j=0; j<new_hl->num_halos; j++) {
-      new_hl->halos[j].uparent = new_hl->halos[j].uparent;
+      new_hl->halos[j].uparent = new_hl->halos[j].parent;
       /* while(new_hl->halos[j].uparent) */
       /* 	new_hl->halos[j].uparent = new_hl->halos[j].uparent->parent; */
     }   
