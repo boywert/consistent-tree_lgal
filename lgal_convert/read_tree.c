@@ -439,6 +439,7 @@ void build_tree() {
   int check,round;
   struct halo_list *last_hl = 0, *new_hl;
   struct halo *desc;
+  struct halo *uparent;
   memset(&halo_tree, 0, sizeof(struct halo_tree));
   partition_sort_halos(0, all_halos.num_halos, all_halos.halos);
   for (start=0, i=0; i<all_halos.num_halos; i++) {
@@ -465,8 +466,11 @@ void build_tree() {
   }
   for (j=0; j<last_hl->num_halos; j++) {
     last_hl->halos[j].uparent = last_hl->halos[j].parent;
-    /* while(last_hl->halos[j].uparent) */
-    /*   last_hl->halos[j].uparent = last_hl->halos[j].uparent->parent; */
+    while(last_hl->halos[j].uparent) {
+      uparent = last_hl->halos[j].uparent;
+      last_hl->halos[j].uparent = last_hl->halos[j].uparent->parent;
+    }
+    last_hl->halos[j].uparent  = uparent;
   }
   for (i=1; i<halo_tree.num_lists; i++) {
     last_hl = &(halo_tree.halo_lists[i-1]);
@@ -485,8 +489,11 @@ void build_tree() {
     }
     for(j=0; j<new_hl->num_halos; j++) {
       new_hl->halos[j].uparent = new_hl->halos[j].parent;
-      /* while(new_hl->halos[j].uparent) */
-      /* 	new_hl->halos[j].uparent = new_hl->halos[j].uparent->parent; */
+      while(new_hl->halos[j].uparent) {
+	uparent = new_hl->halos[j].uparent;
+	new_hl->halos[j].uparent = new_hl->halos[j].uparent->parent;
+      }
+      new_hl->halos[j].uparent = uparent;
     }   
   }
   
