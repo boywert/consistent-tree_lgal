@@ -71,6 +71,8 @@ struct halo *lookup_halo_in_list(struct halo_list *hl, int64_t id) {
   }
   if (hl->halo_lookup[max].id == id)
     return (&(hl->halos[hl->halo_lookup[max].index]));
+  if(id > -1)
+    printf("cannot find %" PRId64 "\n",id);
   return 0;
 }
 
