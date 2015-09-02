@@ -560,9 +560,9 @@ void read_tree(char *filename) {
     h.nexthalo_intree = 0;
     // h.mvir = h.orig_mvir;
     h.accu_mass = h.mvir;
-    if (!(all_halos.num_halos%30000)) {
+    if (!(all_halos.num_halos%1000000)) {
       printf("Allocating halos %" PRId64 "\n",all_halos.num_halos);
-      all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+30000), "Allocating Halos.");
+      all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+1000000), "Allocating Halos.");
     }
     all_halos.halos[all_halos.num_halos] = h;
     all_halos.num_halos++;
