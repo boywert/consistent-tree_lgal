@@ -21,7 +21,7 @@
 #define READBUFFER 1000000
 #define SCALE_FACTOR_MUL 10000
 #define GADGET_MASS_CONVERT 1.e-10
-#define MASSLIMIT 4.02171e+08
+#define MASSLIMIT 0. // 4.02171e+08
 struct halo_tree halo_tree = {0};
 struct halo_list all_halos = {0};
 struct lgal_halo_tree lgal_halo_tree = {0};
@@ -464,14 +464,14 @@ void build_tree() {
     last_hl->halos[j].parent = lookup_halo_in_list(last_hl, last_hl->halos[j].pid);
     last_hl->halos[j].desc = 0;
   }
-  for (j=0; j<last_hl->num_halos; j++) {
-    last_hl->halos[j].uparent = last_hl->halos[j].parent;
-    while(last_hl->halos[j].uparent) {
-      uparent = last_hl->halos[j].uparent;
-      last_hl->halos[j].uparent = last_hl->halos[j].uparent->parent;
-    }
-    last_hl->halos[j].uparent  = uparent;
-  }
+  /* for (j=0; j<last_hl->num_halos; j++) { */
+  /*   last_hl->halos[j].uparent = last_hl->halos[j].parent; */
+  /*   while(last_hl->halos[j].uparent) { */
+  /*     uparent = last_hl->halos[j].uparent; */
+  /*     last_hl->halos[j].uparent = last_hl->halos[j].uparent->parent; */
+  /*   } */
+  /*   last_hl->halos[j].uparent  = uparent; */
+  /* } */
   for (i=1; i<halo_tree.num_lists; i++) {
     last_hl = &(halo_tree.halo_lists[i-1]);
     new_hl = &(halo_tree.halo_lists[i]);
@@ -487,14 +487,14 @@ void build_tree() {
       }
       new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid);
     }
-    for(j=0; j<new_hl->num_halos; j++) {
-      new_hl->halos[j].uparent = new_hl->halos[j].parent;
-      while(new_hl->halos[j].uparent) {
-	uparent = new_hl->halos[j].uparent;
-	new_hl->halos[j].uparent = new_hl->halos[j].uparent->parent;
-      }
-      new_hl->halos[j].uparent = uparent;
-    }   
+    /* for(j=0; j<new_hl->num_halos; j++) { */
+    /*   new_hl->halos[j].uparent = new_hl->halos[j].parent; */
+    /*   while(new_hl->halos[j].uparent) { */
+    /* 	uparent = new_hl->halos[j].uparent; */
+    /* 	new_hl->halos[j].uparent = new_hl->halos[j].uparent->parent; */
+    /*   } */
+    /*   new_hl->halos[j].uparent = uparent; */
+    /* }  */  
   }
   
   /* Make one level-parenting system - L-Galaxies */
