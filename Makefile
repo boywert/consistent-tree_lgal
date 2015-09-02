@@ -1,8 +1,8 @@
-SUBDIRS = src
+SUBDIRS = src lgal_convert
 
 .PHONY: subdirs $(SUBDIRS)
 
-subdirs: $(SUBDIRS)
+subdirs: $(SUBDIRS) 
 
 all: subdirs
 
