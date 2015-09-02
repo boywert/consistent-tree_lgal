@@ -230,11 +230,11 @@ void create_bush(struct halo *halo,int64_t treenr) {
   struct halo *uparent;
   if((uparent = halo->uparent))
     halo = uparent;
-  printf("moving uparent for hid %" PRId64 "\n",halo->id);
+  printf("moving uparent for hid %" PRId64 "\n",halo->id_intree);
   movetree(treenr,halo->treenr);
   halo = halo->nexthalo;
   while(halo) {
-    printf("moving nexthalo for hid:%" PRId64 "\n",halo->id);
+    printf("moving nexthalo for hid:%" PRId64 "\n",halo->id_intree);
     movetree(treenr,halo->treenr);
     halo = halo->nexthalo;
   }
