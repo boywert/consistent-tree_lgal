@@ -18,7 +18,7 @@
 #include "read_tree.h"
 #include "lgal_tree.h"
 
-
+#define READBUFFER 1000000
 #define SCALE_FACTOR_MUL 10000
 #define GADGET_MASS_CONVERT 1.e-10
 struct halo_tree halo_tree = {0};
@@ -313,8 +313,7 @@ int round_to_int( float r ) {
     return floor(r + 0.5); 
 }
 
-#define FILENR 0
-#define PARTMASS 1.e7
+
 
 struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
   int i;
@@ -559,14 +558,12 @@ void read_tree(char *filename) {
     h.nexthalo_intree = 0;
     // h.mvir = h.orig_mvir;
     h.accu_mass = h.mvir;
-    if(h.spin > 0.) {
-      if (!(all_halos.num_halos%1000000)) {
-	printf("Allocating halos %" PRId64 "\n",all_halos.num_halos);
-	all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+1000000), "Allocating Halos.");
-      }
-      all_halos.halos[all_halos.num_halos] = h;
-      all_halos.num_halos++;
+    if (!(all_halos.num_halos % READBUFFER)) {
+      all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+READBUFFER), "Allocating Halos.");
     }
+    all_halos.halos[all_halos.num_halos] = h;
+    all_halos.num_halos++;
+    
   }
   fclose(input);
 
