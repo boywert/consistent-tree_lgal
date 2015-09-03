@@ -581,8 +581,8 @@ void read_tree(char *filename) {
     h.nexthalo_intree = 0;
     // h.mvir = h.orig_mvir;
     h.accu_mass = h.mvir;
-    if(h->id == 61778984) {
-      printf("id = %" PRId64 "\n",h->id);
+    if(h.id == 61778984) {
+      printf("id = %" PRId64 "\n",h.id);
       exit(1);
     }
     if(h.orig_mvir > MASSLIMIT) {
