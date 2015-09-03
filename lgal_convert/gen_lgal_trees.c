@@ -51,6 +51,7 @@ int main(int argc, char **argv) {
     i = mark/(BOX_DIVISIONS*BOX_DIVISIONS);
     j = (mark - i*BOX_DIVISIONS*BOX_DIVISIONS)/BOX_DIVISIONS;
     k = (mark - i*BOX_DIVISIONS*BOX_DIVISIONS - j*BOX_DIVISIONS);
+    printf("Rank %d: do %d %d %d\n",rank,i,j,k);
     do_convert(i,j,k);
     mark += size;
   }
