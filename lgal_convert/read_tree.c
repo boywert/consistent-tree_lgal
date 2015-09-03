@@ -29,6 +29,27 @@ struct halo *haloA;
 float *output_scales;
 int64_t *output_numbers;
 int64_t total_outputs;
+
+int sort_by_location(const void *a, const void *b);
+int sort_by_id(const void *a, const void *b);
+struct halo *lookup_halo_in_list(struct halo_list *hl, int64_t id);
+struct halo_list *lookup_scale(float scale);
+struct halo_list *find_closest_scale(float scale);
+struct halo_list *_lookup_or_create_scale(float scale);
+void build_halo_index(struct halo_list *hl);
+void partition_sort_halos(int64_t min, int64_t max, struct halo *halos);
+void tree_construct(struct halo *halo, int64_t treenr, int flag);
+void create_bush(struct halo *halo,int64_t treenr);
+void build_lgal_tree();
+int round_to_int( float r );
+struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr);
+struct lgal_halo_ids_data make_lgal_halo_ids_data(struct halo *halo, int filenr);
+void output_lgal_tree(int filenr);
+void build_parent();
+void build_tree();
+void read_tree(char *filename);
+void delete_tree(void);
+
 int sort_by_location(const void *a, const void *b) {
   const struct halo *c = a;
   const struct halo *d = b;
@@ -165,24 +186,34 @@ void partition_sort_halos(int64_t min, int64_t max,
   partition_sort_halos(si, max, halos);
 }
 
-void tree_construct(struct halo *halo, int64_t treenr) {
+void tree_construct(struct halo *halo, int64_t treenr, int flag) {
   struct halo *prog,*next_coprog;
   if(halo->mvir < MASSLIMIT)
-    return;
-  if(!haloA)
-    lgal_halo_tree.root[treenr] = halo;
-  else 
-    haloA->nexthalo_intree = halo;
-  halo->treenr = treenr;
-  halo->id_intree = lgal_halo_tree.num_halos_tree[treenr];
-  lgal_halo_tree.num_halos_tree[treenr]++;
-  haloA = halo;
-  prog = halo->prog;
-  if(prog) 
-    tree_construct(prog,treenr);
-  next_coprog = halo->next_coprog;
-  if(next_coprog)
-    tree_construct(next_coprog,treenr);
+    flag = 1;
+  if(!flag) {
+    if(!haloA)
+      lgal_halo_tree.root[treenr] = halo;
+    else 
+      haloA->nexthalo_intree = halo;
+    halo->treenr = treenr;
+    halo->id_intree = lgal_halo_tree.num_halos_tree[treenr];
+    lgal_halo_tree.num_halos_tree[treenr]++;
+    haloA = halo;
+    prog = halo->prog;
+    if(prog) 
+      tree_construct(prog,treenr);
+    next_coprog = halo->next_coprog;
+    if(next_coprog)
+      tree_construct(next_coprog,treenr);
+  } else {
+    halo->mvir = 0.;
+    prog = halo->prog;
+    if(prog) 
+      tree_construct(prog,treenr,flag);
+    next_coprog = halo->next_coprog;
+    if(next_coprog)
+      tree_construct(next_coprog,treenr,flag);
+  }
 }
 
 long long findlastprogenitorid(struct halo *halo) {
@@ -247,6 +278,7 @@ void build_lgal_tree() {
   struct halo_list *new_hl;
   struct halo *prog,*cur;
   struct halo *mostmassive,*prev,*temp;
+  build_tree();
   for (i=2; i<=halo_tree.num_lists; i++) {
     new_hl = &(halo_tree.halo_lists[halo_tree.num_lists-i]);
     for (j=0; j<new_hl->num_halos; j++) {
@@ -282,9 +314,13 @@ void build_lgal_tree() {
   for(i=0;i<new_hl->num_halos;i++) {
     haloA = 0;
     lgal_halo_tree.num_halos_tree[i] = 0;
-    tree_construct(&(new_hl->halos[i]),i);
+    tree_construct(&(new_hl->halos[i]),i,0);
     lgal_halo_tree.lastleaf[i] = haloA; 
   }
+
+  build_parent();
+  
+  /* Bush */
   for(i=0;i<new_hl->num_halos;i++) {
     if(lgal_halo_tree.num_halos_tree[i]) {
         cur = lgal_halo_tree.root[i];
@@ -440,62 +476,35 @@ void output_lgal_tree(int filenr) {
   }
   fclose(fp);
 }
-void build_tree() {
+
+void build_parent() {
   int64_t i, j, start;
   int check,round;
   struct halo_list *last_hl = 0, *new_hl;
   struct halo *desc;
   struct halo *uparent;
-  memset(&halo_tree, 0, sizeof(struct halo_tree));
-  partition_sort_halos(0, all_halos.num_halos, all_halos.halos);
-  for (start=0, i=0; i<all_halos.num_halos; i++) {
-    if (i>0) assert(all_halos.halos[i].scale <= all_halos.halos[i-1].scale);
-    new_hl = _lookup_or_create_scale(all_halos.halos[i].scale);
-    if (new_hl != last_hl) {
-      new_hl->halos = &(all_halos.halos[i]);
-      if (i) {
-	last_hl = lookup_scale(all_halos.halos[start].scale);
-	last_hl->num_halos = i-start;
-      }
-      start = i;
-      last_hl = new_hl;
-    }
-  }
-  if (last_hl) last_hl->num_halos = i-start;
-  if (!halo_tree.num_lists) return;
+
   last_hl = halo_tree.halo_lists;
-  qsort(last_hl->halos, last_hl->num_halos, sizeof(struct halo), sort_by_location);
+
   build_halo_index(last_hl);
   for (j=0; j<last_hl->num_halos; j++) {
     if(last_hl->halos[j].mvir >= MASSLIMIT) {
       if((last_hl->halos[j].parent = lookup_halo_in_list(last_hl, last_hl->halos[j].pid)))
-	if(last_hl->halos[j].parent->mvir < MASSLIMIT)
-	  last_hl->halos[j].parent = 0;
+  	if(last_hl->halos[j].parent->mvir < MASSLIMIT)
+  	  last_hl->halos[j].parent = 0;
     }
-    last_hl->halos[j].desc = 0;
   }
 
   for (i=1; i<halo_tree.num_lists; i++) {
     last_hl = &(halo_tree.halo_lists[i-1]);
     new_hl = &(halo_tree.halo_lists[i]);
-    for (j=0; j<new_hl->num_halos; j++) {
-      if(new_hl->halos[j].mvir >= MASSLIMIT){
-	if((new_hl->halos[j].desc = lookup_halo_in_list(last_hl, (int64_t) new_hl->halos[j].descid)))
-	  if(new_hl->halos[j].desc->mvir < MASSLIMIT)
-	    new_hl->halos[j].desc = 0;
-      }
-    }
-    qsort(new_hl->halos, new_hl->num_halos, sizeof(struct halo), sort_by_desc);
+
     build_halo_index(new_hl);
     for (j=0; j<new_hl->num_halos; j++) {
       if(new_hl->halos[j].mvir >= MASSLIMIT) {
-	if ((desc = new_hl->halos[j].desc)) {
-	  new_hl->halos[j].next_coprog = desc->prog;
-	  desc->prog = &(new_hl->halos[j]);
-	}
-	if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid)))
-	  if(new_hl->halos[j].parent->mvir < MASSLIMIT)
-	    new_hl->halos[j].parent = 0;
+       	if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid)))
+    	  if(new_hl->halos[j].parent->mvir < MASSLIMIT)
+    	    new_hl->halos[j].parent = 0;
       }
     }
   }
@@ -526,6 +535,57 @@ void build_tree() {
 	  new_hl->halos[j].nexthalo = new_hl->halos[j].uparent->nexthalo;
 	  new_hl->halos[j].uparent->nexthalo = &(new_hl->halos[j]);
 	}
+      }
+    }
+  }
+}
+
+
+void build_tree() {
+  int64_t i, j, start;
+  int check,round;
+  struct halo_list *last_hl = 0, *new_hl;
+  struct halo *desc;
+  struct halo *uparent;
+  memset(&halo_tree, 0, sizeof(struct halo_tree));
+  partition_sort_halos(0, all_halos.num_halos, all_halos.halos);
+  for (start=0, i=0; i<all_halos.num_halos; i++) {
+    if (i>0) assert(all_halos.halos[i].scale <= all_halos.halos[i-1].scale);
+    new_hl = _lookup_or_create_scale(all_halos.halos[i].scale);
+    if (new_hl != last_hl) {
+      new_hl->halos = &(all_halos.halos[i]);
+      if (i) {
+	last_hl = lookup_scale(all_halos.halos[start].scale);
+	last_hl->num_halos = i-start;
+      }
+      start = i;
+      last_hl = new_hl;
+    }
+  }
+  if (last_hl) last_hl->num_halos = i-start;
+  if (!halo_tree.num_lists) return;
+  last_hl = halo_tree.halo_lists;
+  qsort(last_hl->halos, last_hl->num_halos, sizeof(struct halo), sort_by_location);
+  build_halo_index(last_hl);
+
+  for (i=1; i<halo_tree.num_lists; i++) {
+    last_hl = &(halo_tree.halo_lists[i-1]);
+    new_hl = &(halo_tree.halo_lists[i]);
+    for (j=0; j<new_hl->num_halos; j++) {
+      if(new_hl->halos[j].mvir >= MASSLIMIT){
+	if((new_hl->halos[j].desc = lookup_halo_in_list(last_hl, (int64_t) new_hl->halos[j].descid)))
+	  if(new_hl->halos[j].desc->mvir < MASSLIMIT)
+	    new_hl->halos[j].desc = 0;
+      }
+    }
+    qsort(new_hl->halos, new_hl->num_halos, sizeof(struct halo), sort_by_desc);
+    build_halo_index(new_hl);
+    for (j=0; j<new_hl->num_halos; j++) {
+      if(new_hl->halos[j].mvir >= MASSLIMIT) {
+    	if ((desc = new_hl->halos[j].desc)) {
+    	  new_hl->halos[j].next_coprog = desc->prog;
+    	  desc->prog = &(new_hl->halos[j]);
+    	}
       }
     }
   }
@@ -588,7 +648,6 @@ void read_tree(char *filename) {
 
   printf("Finish reading %s\n",filename);
   all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*all_halos.num_halos, "Allocating Halos.");
-  build_tree();
 }
 
 void delete_tree(void) {
