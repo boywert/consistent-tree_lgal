@@ -168,7 +168,7 @@ void partition_sort_halos(int64_t min, int64_t max,
 void tree_construct(struct halo *halo, int64_t treenr) {
   struct halo *prog,*next_coprog;
   if(halo->mvir < MASSLIMIT)
-    return
+    return;
 
   if(!haloA)
     lgal_halo_tree.root[treenr] = halo;
