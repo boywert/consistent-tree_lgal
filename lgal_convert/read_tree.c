@@ -233,7 +233,7 @@ void movetree(int64_t tar, int64_t src) {
   struct halo *cur_halo;
   int64_t count_halo;
   if(tar == src) return;
-  if(tar < src) {
+  if(tar > src) {
     printf("something is weird, tar %" PRId64 " src %" PRId64 "\n",tar,src);
     exit(1);
   }
