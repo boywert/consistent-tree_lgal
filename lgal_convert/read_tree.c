@@ -469,7 +469,6 @@ void build_tree() {
   qsort(last_hl->halos, last_hl->num_halos, sizeof(struct halo), sort_by_location);
   build_halo_index(last_hl);
   for (j=0; j<last_hl->num_halos; j++) {
-    printf(" scale = %0.5f\n",last_hl->halos[j].scale);
     last_hl->halos[j].parent = lookup_halo_in_list(last_hl, last_hl->halos[j].pid);
     last_hl->halos[j].desc = 0;
   }
@@ -489,9 +488,6 @@ void build_tree() {
       }
       new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid);
     }
-    if(i==1)
-      for (j=0; j<new_hl->num_halos; j++) 
-	  last_hl->halos[j].parent = lookup_halo_in_list(last_hl, last_hl->halos[j].pid);
   }
   
   /* Make one level-parenting system - L-Galaxies */
