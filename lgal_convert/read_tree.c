@@ -582,6 +582,10 @@ void read_tree(char *filename) {
     h.nexthalo_intree = 0;
     // h.mvir = h.orig_mvir;
     h.accu_mass = h.mvir;
+    if(h->id == 61778984) {
+      printf("%" PRId64 "\n",h->id);
+      exit(1);
+    }
     if(h.orig_mvir > MASSLIMIT) {
       if (!(all_halos.num_halos % READBUFFER)) {
 	all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+READBUFFER), "Allocating Halos.");
