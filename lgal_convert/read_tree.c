@@ -469,17 +469,11 @@ void build_tree() {
   qsort(last_hl->halos, last_hl->num_halos, sizeof(struct halo), sort_by_location);
   build_halo_index(last_hl);
   for (j=0; j<last_hl->num_halos; j++) {
+    printf(" scale = %0.5f\n",last_hl->halos[j].scale);
     last_hl->halos[j].parent = lookup_halo_in_list(last_hl, last_hl->halos[j].pid);
     last_hl->halos[j].desc = 0;
   }
-  /* for (j=0; j<last_hl->num_halos; j++) { */
-  /*   last_hl->halos[j].uparent = last_hl->halos[j].parent; */
-  /*   while(last_hl->halos[j].uparent) { */
-  /*     uparent = last_hl->halos[j].uparent; */
-  /*     last_hl->halos[j].uparent = last_hl->halos[j].uparent->parent; */
-  /*   } */
-  /*   last_hl->halos[j].uparent  = uparent; */
-  /* } */
+
   for (i=1; i<halo_tree.num_lists; i++) {
     last_hl = &(halo_tree.halo_lists[i-1]);
     new_hl = &(halo_tree.halo_lists[i]);
@@ -495,14 +489,9 @@ void build_tree() {
       }
       new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid);
     }
-    /* for(j=0; j<new_hl->num_halos; j++) { */
-    /*   new_hl->halos[j].uparent = new_hl->halos[j].parent; */
-    /*   while(new_hl->halos[j].uparent) { */
-    /* 	uparent = new_hl->halos[j].uparent; */
-    /* 	new_hl->halos[j].uparent = new_hl->halos[j].uparent->parent; */
-    /*   } */
-    /*   new_hl->halos[j].uparent = uparent; */
-    /* }  */  
+    if(i==1)
+      for (j=0; j<new_hl->num_halos; j++) 
+	  last_hl->halos[j].parent = lookup_halo_in_list(last_hl, last_hl->halos[j].pid);
   }
   
   /* Make one level-parenting system - L-Galaxies */
@@ -586,10 +575,6 @@ void read_tree(char *filename) {
 	all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+READBUFFER), "Allocating Halos.");
       }
       all_halos.halos[all_halos.num_halos] = h;
-      if(h.id == 61778984) {
-	printf("id = %" PRId64 "\n",h.id);
-	exit(1);
-      }
       all_halos.num_halos++;
     }
   }
