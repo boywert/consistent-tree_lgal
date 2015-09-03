@@ -323,6 +323,7 @@ void build_lgal_tree() {
   for(i=0;i<new_hl->num_halos;i++) {
     haloA = 0;
     lgal_halo_tree.num_halos_tree[i] = 0;
+    lgal_halo_tree.root[i] = 0;
     tree_construct(&(new_hl->halos[i]),i,0);
     lgal_halo_tree.lastleaf[i] = haloA; 
   }
@@ -356,9 +357,10 @@ void build_lgal_tree() {
       }
     }
   }
-  if(lgal_halo_tree.num_halos != count_halo) {
-    printf("Missing halos\n"); exit(1);
-  }
+  lgal_halo_tree.num_halos = count_halo;
+  /* if(lgal_halo_tree.num_halos != count_halo) { */
+  /*   printf("Missing halos\n"); exit(1); */
+  /* } */
 }
 
 int round_to_int( float r ) {
