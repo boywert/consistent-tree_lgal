@@ -169,7 +169,6 @@ void tree_construct(struct halo *halo, int64_t treenr) {
   struct halo *prog,*next_coprog;
   if(halo->mvir < MASSLIMIT)
     return;
-
   if(!haloA)
     lgal_halo_tree.root[treenr] = halo;
   else 
@@ -469,8 +468,8 @@ void build_tree() {
   build_halo_index(last_hl);
   for (j=0; j<last_hl->num_halos; j++) {
     if((last_hl->halos[j].parent = lookup_halo_in_list(last_hl, last_hl->halos[j].pid)))
-      if(last_hl->halos[j].desc->mvir < MASSLIMIT)
-	   last_hl->halos[j].desc = 0;
+      if(last_hl->halos[j].parent->mvir < MASSLIMIT)
+	   last_hl->halos[j].parent = 0;
     last_hl->halos[j].desc = 0;
   }
 
@@ -490,8 +489,8 @@ void build_tree() {
 	desc->prog = &(new_hl->halos[j]);
       }
       if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid)))
-	if(new_hl->halos[j].desc->mvir < MASSLIMIT)
-	  new_hl->halos[j].desc = 0;
+	if(new_hl->halos[j].parent->mvir < MASSLIMIT)
+	  new_hl->halos[j].parent = 0;
     }
   }
   
