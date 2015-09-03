@@ -234,7 +234,7 @@ void movetree(int64_t tar, int64_t src) {
   int64_t count_halo;
   if(tar == src) return;
   if(tar < src) {
-    printf("something is weird\n");
+    printf("something is weird, tar %" PRId64 " src %" PRId64 "\n",tar,src);
     exit(1);
   }
   printf("tar = %"PRId64" src = %"PRId64"\n",tar,src);
