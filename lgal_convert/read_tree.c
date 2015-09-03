@@ -201,10 +201,10 @@ void tree_construct(struct halo *halo, int64_t treenr, int flag) {
     haloA = halo;
     prog = halo->prog;
     if(prog) 
-      tree_construct(prog,treenr);
+      tree_construct(prog,treenr,flag);
     next_coprog = halo->next_coprog;
     if(next_coprog)
-      tree_construct(next_coprog,treenr);
+      tree_construct(next_coprog,treenr,flag);
   } else {
     halo->mvir = 0.;
     prog = halo->prog;
