@@ -570,7 +570,6 @@ void read_tree(char *filename) {
 
   for (n=0; n<NUM_INPUTS; n++) types[n] = stypes[n];
   input = check_fopen(filename, "r");
-  int64_t countj0 = 0;
   while (fgets(buffer, 1024, input)) {
     if (buffer[0] == '#') continue;
     n = stringparse(buffer, data, (enum parsetype *)types, NUM_INPUTS);
@@ -583,7 +582,7 @@ void read_tree(char *filename) {
     // h.mvir = h.orig_mvir;
     h.accu_mass = h.mvir;
     if(h->id == 61778984) {
-      printf("%" PRId64 "\n",h->id);
+      printf("id = %" PRId64 "\n",h->id);
       exit(1);
     }
     if(h.orig_mvir > MASSLIMIT) {
