@@ -264,11 +264,13 @@ void create_bush(struct halo *halo,int64_t treenr) {
   if((uparent = halo->uparent))
     halo = uparent;
   printf("moving uparent for hid %" PRId64 " : %d\n",halo->id, halo->treenr);
-  movetree(treenr,halo->treenr);
+  if(halo->mvir > MASSLIMIT)
+    movetree(treenr,halo->treenr);
   halo = halo->nexthalo;
   while(halo) {
     printf("moving nexthalo for hid:%" PRId64 ": %d scale %f\n",halo->id, halo->treenr,halo->scale);
-    movetree(treenr,halo->treenr);
+    if(halo->mvir > MASSLIMIT)
+      movetree(treenr,halo->treenr);
     halo = halo->nexthalo;
   }
 }
