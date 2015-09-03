@@ -173,10 +173,6 @@ void tree_construct(struct halo *halo, int64_t treenr) {
     haloA->nexthalo_intree = halo;
   halo->treenr = treenr;
   halo->id_intree = lgal_halo_tree.num_halos_tree[treenr];
-  if(halo->id == 61778984) {
-    printf("%" PRId64 " intree_id = %" PRId64 " treenr = %" PRId64 "\n",halo->id,halo->id_intree, treenr);
-    exit(1);
-  }
   lgal_halo_tree.num_halos_tree[treenr]++;
   haloA = halo;
   prog = halo->prog;
@@ -477,6 +473,10 @@ void build_tree() {
     last_hl = &(halo_tree.halo_lists[i-1]);
     new_hl = &(halo_tree.halo_lists[i]);
     for (j=0; j<new_hl->num_halos; j++) {
+      if(new_hl->halos[j].id == 61778984) {
+	printf("id = %" PRId64 "\n",new_hl->halos[j].id);
+	exit(1);
+      }
       new_hl->halos[j].desc = lookup_halo_in_list(last_hl, (int64_t) new_hl->halos[j].descid);
     }
     qsort(new_hl->halos, new_hl->num_halos, sizeof(struct halo), sort_by_desc);
