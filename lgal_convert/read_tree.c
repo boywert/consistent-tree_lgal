@@ -231,11 +231,11 @@ void create_bush(struct halo *halo,int64_t treenr) {
   printf("this halo id %"PRId64" tree: %d\n",halo->id,halo->treenr);
   if((uparent = halo->uparent))
     halo = uparent;
-  printf("moving uparent for hid %" PRId64 " : %d\n",halo->id_intree,halo->treenr);
+  printf("moving uparent for hid %" PRId64 " : %d\n",halo->id, halo->treenr);
   movetree(treenr,halo->treenr);
   halo = halo->nexthalo;
   while(halo) {
-    printf("moving nexthalo for hid:%" PRId64 ": %d\n",halo->id_intree,halo->treenr);
+    printf("moving nexthalo for hid:%" PRId64 ": %d\n",halo->id, halo->treenr);
     movetree(treenr,halo->treenr);
     halo = halo->nexthalo;
   }
