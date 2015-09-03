@@ -487,24 +487,9 @@ void build_parent() {
   int64_t i, j, start;
   int check,round;
   struct halo_list *last_hl = 0, *new_hl;
-  struct halo *desc;
-  struct halo *uparent;
 
-  last_hl = halo_tree.halo_lists;
-
-  build_halo_index(last_hl);
-  for (j=0; j<last_hl->num_halos; j++) {
-    if(last_hl->halos[j].mvir >= MASSLIMIT) {
-      if((last_hl->halos[j].parent = lookup_halo_in_list(last_hl, last_hl->halos[j].pid)))
-  	if(last_hl->halos[j].parent->mvir < MASSLIMIT)
-  	  last_hl->halos[j].parent = 0;
-    }
-  }
-
-  for (i=1; i<halo_tree.num_lists; i++) {
-    last_hl = &(halo_tree.halo_lists[i-1]);
+  for (i=0; i<halo_tree.num_lists; i++) {
     new_hl = &(halo_tree.halo_lists[i]);
-
     build_halo_index(new_hl);
     for (j=0; j<new_hl->num_halos; j++) {
       if(new_hl->halos[j].mvir >= MASSLIMIT) {
@@ -512,6 +497,8 @@ void build_parent() {
     	  if(new_hl->halos[j].parent->mvir < MASSLIMIT)
     	    new_hl->halos[j].parent = 0;
       }
+      else
+	new_hl->halos[j].parent = 0;
     }
   }
   
