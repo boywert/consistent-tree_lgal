@@ -324,7 +324,7 @@ void build_lgal_tree() {
   for(i=0;i<new_hl->num_halos;i++) {
     if(lgal_halo_tree.num_halos_tree[i]) {
         cur = lgal_halo_tree.root[i];
-	// printf("operating from %"PRId64"\n",i);
+	printf("operating from %"PRId64"\n",i);
 	create_bush(cur, i);
 	cur = cur->nexthalo_intree;
 	while(cur) {
