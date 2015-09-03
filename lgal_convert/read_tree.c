@@ -21,7 +21,7 @@
 #define READBUFFER 1000000
 #define SCALE_FACTOR_MUL 10000
 #define GADGET_MASS_CONVERT 1.e-10
-#define MASSLIMIT 1.e8 // 4.02171e+08
+#define MASSLIMIT 9.e7 // 4.02171e+08
 struct halo_tree halo_tree = {0};
 struct halo_list all_halos = {0};
 struct lgal_halo_tree lgal_halo_tree = {0};
