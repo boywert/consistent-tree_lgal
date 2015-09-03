@@ -167,6 +167,9 @@ void partition_sort_halos(int64_t min, int64_t max,
 
 void tree_construct(struct halo *halo, int64_t treenr) {
   struct halo *prog,*next_coprog;
+  if(halo->mvir < MASSLIMIT)
+    return
+
   if(!haloA)
     lgal_halo_tree.root[treenr] = halo;
   else 
@@ -465,7 +468,9 @@ void build_tree() {
   qsort(last_hl->halos, last_hl->num_halos, sizeof(struct halo), sort_by_location);
   build_halo_index(last_hl);
   for (j=0; j<last_hl->num_halos; j++) {
-    last_hl->halos[j].parent = lookup_halo_in_list(last_hl, last_hl->halos[j].pid);
+    if((last_hl->halos[j].parent = lookup_halo_in_list(last_hl, last_hl->halos[j].pid)))
+      if(last_hl->halos[j].desc->mvir < MASSLIMIT)
+	   last_hl->halos[j].desc = 0;
     last_hl->halos[j].desc = 0;
   }
 
@@ -473,11 +478,9 @@ void build_tree() {
     last_hl = &(halo_tree.halo_lists[i-1]);
     new_hl = &(halo_tree.halo_lists[i]);
     for (j=0; j<new_hl->num_halos; j++) {
-      if(new_hl->halos[j].id == 61778984) {
-	printf("id = %" PRId64 "\n",new_hl->halos[j].id);
-	exit(1);
-      }
-      new_hl->halos[j].desc = lookup_halo_in_list(last_hl, (int64_t) new_hl->halos[j].descid);
+      if((new_hl->halos[j].desc = lookup_halo_in_list(last_hl, (int64_t) new_hl->halos[j].descid)))
+	 if(new_hl->halos[j].desc->mvir < MASSLIMIT)
+	   new_hl->halos[j].desc = 0;
     }
     qsort(new_hl->halos, new_hl->num_halos, sizeof(struct halo), sort_by_desc);
     build_halo_index(new_hl);
@@ -486,7 +489,9 @@ void build_tree() {
 	new_hl->halos[j].next_coprog = desc->prog;
 	desc->prog = &(new_hl->halos[j]);
       }
-      new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid);
+      if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid)))
+	if(new_hl->halos[j].desc->mvir < MASSLIMIT)
+	  new_hl->halos[j].desc = 0;
     }
   }
   
