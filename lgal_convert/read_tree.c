@@ -467,9 +467,11 @@ void build_tree() {
   qsort(last_hl->halos, last_hl->num_halos, sizeof(struct halo), sort_by_location);
   build_halo_index(last_hl);
   for (j=0; j<last_hl->num_halos; j++) {
-    if((last_hl->halos[j].parent = lookup_halo_in_list(last_hl, last_hl->halos[j].pid)))
-      if(last_hl->halos[j].parent->mvir < MASSLIMIT)
-	   last_hl->halos[j].parent = 0;
+    if(last_hl->halos[j].mvir >= MASSLIMIT) {
+      if((last_hl->halos[j].parent = lookup_halo_in_list(last_hl, last_hl->halos[j].pid)))
+	if(last_hl->halos[j].parent->mvir < MASSLIMIT)
+	  last_hl->halos[j].parent = 0;
+    }
     last_hl->halos[j].desc = 0;
   }
 
@@ -477,20 +479,24 @@ void build_tree() {
     last_hl = &(halo_tree.halo_lists[i-1]);
     new_hl = &(halo_tree.halo_lists[i]);
     for (j=0; j<new_hl->num_halos; j++) {
-      if((new_hl->halos[j].desc = lookup_halo_in_list(last_hl, (int64_t) new_hl->halos[j].descid)))
-	 if(new_hl->halos[j].desc->mvir < MASSLIMIT)
-	   new_hl->halos[j].desc = 0;
+      if(new_hl->halos[j].mvir >= MASSLIMIT){
+	if((new_hl->halos[j].desc = lookup_halo_in_list(last_hl, (int64_t) new_hl->halos[j].descid)))
+	  if(new_hl->halos[j].desc->mvir < MASSLIMIT)
+	    new_hl->halos[j].desc = 0;
+      }
     }
     qsort(new_hl->halos, new_hl->num_halos, sizeof(struct halo), sort_by_desc);
     build_halo_index(new_hl);
     for (j=0; j<new_hl->num_halos; j++) {
-      if ((desc = new_hl->halos[j].desc)) {
-	new_hl->halos[j].next_coprog = desc->prog;
-	desc->prog = &(new_hl->halos[j]);
+      if(new_hl->halos[j].mvir >= MASSLIMIT) {
+	if ((desc = new_hl->halos[j].desc)) {
+	  new_hl->halos[j].next_coprog = desc->prog;
+	  desc->prog = &(new_hl->halos[j]);
+	}
+	if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid)))
+	  if(new_hl->halos[j].parent->mvir < MASSLIMIT)
+	    new_hl->halos[j].parent = 0;
       }
-      if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid)))
-	if(new_hl->halos[j].parent->mvir < MASSLIMIT)
-	  new_hl->halos[j].parent = 0;
     }
   }
   
@@ -563,20 +569,20 @@ void read_tree(char *filename) {
     if (buffer[0] == '#') continue;
     n = stringparse(buffer, data, (enum parsetype *)types, NUM_INPUTS);
     if (n<NUM_INPUTS) continue;
-    h.desc = (struct halo *)(int64_t)h.descid;
-    h.parent = (struct halo *)(int64_t)h.pid;
-    h.uparent = (struct halo *)(int64_t)h.upid;
+    h.desc = 0;
+    h.parent = 0;
+    h.uparent = 0;
     h.nexthalo = 0;
     h.nexthalo_intree = 0;
     // h.mvir = h.orig_mvir;
     h.accu_mass = h.mvir;
-    if(h.orig_mvir > MASSLIMIT) {
-      if (!(all_halos.num_halos % READBUFFER)) {
-	all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+READBUFFER), "Allocating Halos.");
-      }
-      all_halos.halos[all_halos.num_halos] = h;
-      all_halos.num_halos++;
+
+    if (!(all_halos.num_halos % READBUFFER)) {
+      all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+READBUFFER), "Allocating Halos.");
     }
+    all_halos.halos[all_halos.num_halos] = h;
+    all_halos.num_halos++;
+
   }
   fclose(input);
 
