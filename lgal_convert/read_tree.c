@@ -233,6 +233,10 @@ void movetree(int64_t tar, int64_t src) {
   struct halo *cur_halo;
   int64_t count_halo;
   if(tar == src) return;
+  if(tar < src) {
+    printf("something is weird\n");
+    exit(1);
+  }
   printf("tar = %"PRId64" src = %"PRId64"\n",tar,src);
   count_halo = lgal_halo_tree.num_halos_tree[tar];
   lgal_halo_tree.num_halos_tree[tar] +=  lgal_halo_tree.num_halos_tree[src];
