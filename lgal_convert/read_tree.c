@@ -272,9 +272,10 @@ void create_bush(struct halo *halo,int64_t treenr) {
     movetree(treenr,halo->treenr);
   halo = halo->nexthalo;
   while(halo) {
-    printf("moving nexthalo for hid:%" PRId64 ": %d scale %f\n",halo->id, halo->treenr,halo->scale);
-    if(halo->mvir > MASSLIMIT)
+    if(halo->mvir > MASSLIMIT) {
+      printf("moving nexthalo for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
       movetree(treenr,halo->treenr);
+    }
     halo = halo->nexthalo;
   }
 }
@@ -285,6 +286,7 @@ void build_lgal_tree() {
   struct halo *prog,*cur;
   struct halo *mostmassive,*prev,*temp;
   build_tree();
+  
   for (i=2; i<=halo_tree.num_lists; i++) {
     new_hl = &(halo_tree.halo_lists[halo_tree.num_lists-i]);
     for (j=0; j<new_hl->num_halos; j++) {
@@ -492,11 +494,10 @@ void build_parent() {
     new_hl = &(halo_tree.halo_lists[i]);
     build_halo_index(new_hl);
     for (j=0; j<new_hl->num_halos; j++) {
-      if(new_hl->halos[j].mvir >= MASSLIMIT) {
+      if(new_hl->halos[j].mvir >= MASSLIMIT) 
        	if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid)))
     	  if(new_hl->halos[j].parent->mvir < MASSLIMIT)
-    	    new_hl->halos[j].parent = 0;
-      }
+    	    new_hl->halos[j].parent = 0;  
       else
 	new_hl->halos[j].parent = 0;
     }
