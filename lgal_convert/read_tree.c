@@ -267,13 +267,14 @@ void create_bush(struct halo *halo,int64_t treenr) {
   // printf("this halo id %"PRId64" tree: %d\n",halo->id,halo->treenr);
   if((uparent = halo->uparent))
     halo = uparent;
-  printf("moving uparent for hid %" PRId64 " : %d\n",halo->id, halo->treenr);
-  if(halo->mvir > MASSLIMIT)
+  if(halo->mvir > MASSLIMIT) {
+    // printf("moving uparent for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
     movetree(treenr,halo->treenr);
+  }
   halo = halo->nexthalo;
   while(halo) {
     if(halo->mvir > MASSLIMIT) {
-      printf("moving nexthalo for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
+      // printf("moving nexthalo for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
       movetree(treenr,halo->treenr);
     }
     halo = halo->nexthalo;
@@ -332,7 +333,7 @@ void build_lgal_tree() {
   for(i=0;i<new_hl->num_halos;i++) {
     if(lgal_halo_tree.num_halos_tree[i]) {
         cur = lgal_halo_tree.root[i];
-	printf("operating from %"PRId64"\n",i);
+	// printf("operating from %"PRId64"\n",i);
 	create_bush(cur, i);
 	cur = cur->nexthalo_intree;
 	while(cur) {
