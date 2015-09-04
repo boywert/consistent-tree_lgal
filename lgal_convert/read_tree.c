@@ -430,7 +430,7 @@ struct lgal_halo_ids_data make_lgal_halo_ids_data(struct halo *halo, int filenr)
   return buffer;
 }
 void output_lgal_tree(int filenr) {
-  int64_t i,count_tree = 0,count_halo = 0;
+  int64_t i,count_tree = 0;
   int buffer;
   char str[1024];
   struct halo *cur;
@@ -452,46 +452,38 @@ void output_lgal_tree(int filenr) {
       count_tree++;
     }
   }
-  count_halo = 0;
   for(i=0;i<lgal_halo_tree.num_trees;i++) {
     if(lgal_halo_tree.num_halos_tree[i]) {
       cur = lgal_halo_tree.root[i];
       halo_data = make_lgal_halo_data(cur,filenr);
       fwrite(&halo_data,sizeof(struct lgal_halo_data),1,fp);
-      count_halo++;
       cur = cur->nexthalo_intree;
       while(cur) {
   	halo_data = make_lgal_halo_data(cur,filenr);
   	fwrite(&halo_data,sizeof(struct lgal_halo_data),1,fp);
-	count_halo++;
   	cur = cur->nexthalo_intree;
       }
     }
   }
-  printf("halo_table: %" PRId64 "\n",count_halo); 
   rewind(fp);
   buffer = (int) count_tree;
   fwrite(&buffer,sizeof(int),1,fp);
   fclose(fp);
   sprintf(str,"%s/treedata/tree_dbids_%03d.%d",TREE_OUTBASE,(int)output_numbers[total_outputs-1],filenr);
   fp = fopen(str,"wb");
-  count_halo = 0;
   for(i=0;i<lgal_halo_tree.num_trees;i++) {
     if(lgal_halo_tree.num_halos_tree[i]) {
       cur = lgal_halo_tree.root[i];
       halo_ids_data = make_lgal_halo_ids_data(cur,filenr);
       fwrite(&halo_ids_data,sizeof(struct lgal_halo_ids_data),1,fp);
-      count_halo++;
       cur = cur->nexthalo_intree;
       while(cur) {
   	halo_ids_data = make_lgal_halo_ids_data(cur,filenr);
   	fwrite(&halo_ids_data,sizeof(struct lgal_halo_ids_data),1,fp);
-	count_halo++;
   	cur = cur->nexthalo_intree;
       }
     }
   }
-  printf("haloids_table: %" PRId64 "\n",count_halo); 
   fclose(fp);
 }
 
