@@ -468,7 +468,7 @@ void output_lgal_tree(int filenr) {
       }
     }
   }
-  printf("halo_table: %" PRId64 "\n";) 
+  printf("halo_table: %" PRId64 "\n"); 
   rewind(fp);
   lgal_halo_tree.num_trees = count_tree;
   buffer = (int) lgal_halo_tree.num_trees;
@@ -492,7 +492,7 @@ void output_lgal_tree(int filenr) {
       }
     }
   }
-  printf("haloids_table: %" PRId64 "\n";) 
+  printf("haloids_table: %" PRId64 "\n"); 
   fclose(fp);
 }
 
