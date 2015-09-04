@@ -470,8 +470,7 @@ void output_lgal_tree(int filenr) {
   }
   printf("halo_table: %" PRId64 "\n",count_halo); 
   rewind(fp);
-  lgal_halo_tree.num_trees = count_tree;
-  buffer = (int) lgal_halo_tree.num_trees;
+  buffer = (int) count_tree;
   fwrite(&buffer,sizeof(int),1,fp);
   fclose(fp);
   sprintf(str,"%s/treedata/tree_dbids_%03d.%d",TREE_OUTBASE,(int)output_numbers[total_outputs-1],filenr);
