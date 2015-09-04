@@ -188,7 +188,7 @@ void partition_sort_halos(int64_t min, int64_t max,
 
 void tree_construct(struct halo *halo, int64_t treenr, int flag) {
   struct halo *prog,*next_coprog;
-  if(halo->mvir < MASSLIMIT)
+  if(halo->orig_mvir < MASSLIMIT)
     flag = 1;
   if(!flag) {
     if(!haloA)
@@ -267,13 +267,13 @@ void create_bush(struct halo *halo,int64_t treenr) {
   // printf("this halo id %"PRId64" tree: %d\n",halo->id,halo->treenr);
   if((uparent = halo->uparent))
     halo = uparent;
-  if(halo->mvir > MASSLIMIT) {
+  if(halo->orig_mvir > MASSLIMIT) {
     // printf("moving uparent for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
     movetree(treenr,halo->treenr);
   }
   halo = halo->nexthalo;
   while(halo) {
-    if(halo->mvir > MASSLIMIT) {
+    if(halo->orig_mvir > MASSLIMIT) {
       // printf("moving nexthalo for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
       movetree(treenr,halo->treenr);
     }
@@ -497,9 +497,9 @@ void build_parent() {
     new_hl = &(halo_tree.halo_lists[i]);
     build_halo_index(new_hl);
     for (j=0; j<new_hl->num_halos; j++) {
-      if(new_hl->halos[j].mvir >= MASSLIMIT) 
+      if(new_hl->halos[j].orig_mvir >= MASSLIMIT) 
        	if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid)))
-    	  if(new_hl->halos[j].parent->mvir < MASSLIMIT)
+    	  if(new_hl->halos[j].parent->orig_mvir < MASSLIMIT)
     	    new_hl->halos[j].parent = 0;  
       else
 	new_hl->halos[j].parent = 0;
@@ -569,16 +569,16 @@ void build_tree() {
     last_hl = &(halo_tree.halo_lists[i-1]);
     new_hl = &(halo_tree.halo_lists[i]);
     for (j=0; j<new_hl->num_halos; j++) {
-      if(new_hl->halos[j].mvir >= MASSLIMIT){
+      if(new_hl->halos[j].orig_mvir >= MASSLIMIT){
 	if((new_hl->halos[j].desc = lookup_halo_in_list(last_hl, (int64_t) new_hl->halos[j].descid)))
-	  if(new_hl->halos[j].desc->mvir < MASSLIMIT)
+	  if(new_hl->halos[j].desc->orig_mvir < MASSLIMIT)
 	    new_hl->halos[j].desc = 0;
       }
     }
     qsort(new_hl->halos, new_hl->num_halos, sizeof(struct halo), sort_by_desc);
     build_halo_index(new_hl);
     for (j=0; j<new_hl->num_halos; j++) {
-      if(new_hl->halos[j].mvir >= MASSLIMIT) {
+      if(new_hl->halos[j].orig_mvir >= MASSLIMIT) {
     	if ((desc = new_hl->halos[j].desc)) {
     	  new_hl->halos[j].next_coprog = desc->prog;
     	  desc->prog = &(new_hl->halos[j]);
