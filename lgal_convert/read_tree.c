@@ -33,7 +33,7 @@ int64_t total_outputs;
 int sort_by_location(const void *a, const void *b);
 int sort_by_id(const void *a, const void *b);
 int sort_by_desc(const void *a, const void *b);
-int sort_by_mvir(const void *a, const void *b)
+int sort_by_mvir(const void *a, const void *b);
 struct halo *lookup_halo_in_list(struct halo_list *hl, int64_t id);
 struct halo_list *lookup_scale(float scale);
 struct halo_list *find_closest_scale(float scale);
