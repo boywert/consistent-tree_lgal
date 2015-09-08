@@ -32,6 +32,8 @@ int64_t total_outputs;
 
 int sort_by_location(const void *a, const void *b);
 int sort_by_id(const void *a, const void *b);
+int sort_by_desc(const void *a, const void *b);
+int sort_by_mvir(const void *a, const void *b)
 struct halo *lookup_halo_in_list(struct halo_list *hl, int64_t id);
 struct halo_list *lookup_scale(float scale);
 struct halo_list *find_closest_scale(float scale);
@@ -80,6 +82,14 @@ int sort_by_desc(const void *a, const void *b) {
   if (d->desc < c->desc) return 1;
   return 0;
 }
+int sort_by_mvir(const void *a, const void *b) {
+  const struct halo *c = a;
+  const struct halo *d = b;
+  if (c->mvir < d->mvir) return 1;
+  if (d->mvir < c->mvir) return -1;
+  return 0;
+}
+
 
 struct halo *lookup_halo_in_list(struct halo_list *hl, int64_t id) {
   int64_t i;
@@ -561,7 +571,7 @@ void build_tree() {
   if (last_hl) last_hl->num_halos = i-start;
   if (!halo_tree.num_lists) return;
   last_hl = halo_tree.halo_lists;
-  qsort(last_hl->halos, last_hl->num_halos, sizeof(struct halo), sort_by_location);
+  qsort(last_hl->halos, last_hl->num_halos, sizeof(struct halo), sort_by_mvir);
   build_halo_index(last_hl);
 
   for (i=1; i<halo_tree.num_lists; i++) {
