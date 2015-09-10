@@ -403,7 +403,7 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
     buffer.M_Crit200 = (float) 0.;
     buffer.M_TopHat = (float) 0.;
   } else {
-    printf("Mcrit = %f\n", halo->M200c_all*GADGET_MASS_CONVERT);
+    // printf("Mcrit = %f\n", halo->M200c_all*GADGET_MASS_CONVERT);
     buffer.M_Mean200 = (float) halo->M200c_all*GADGET_MASS_CONVERT;
     buffer.M_Crit200 = (float) halo->M200c_all*GADGET_MASS_CONVERT;
     buffer.M_TopHat = (float) halo->M200c_all*GADGET_MASS_CONVERT;
