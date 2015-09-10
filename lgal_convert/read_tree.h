@@ -20,7 +20,7 @@ struct halo {
   int64_t id_infile;
   int64_t descid;
   double accu_mass;
-  float  M200c_all,M_TopHat,M200b;
+  float  M200c_all;
   float mvir, orig_mvir, rvir, rs, vrms, scale_of_last_MM,
     vmax, pos[3], vel[3], J[3], spin;
   EXTRA_HALO_INFO
