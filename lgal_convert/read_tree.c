@@ -398,10 +398,15 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
     buffer.NextHaloInFOFgroup = (int)halo->nexthalo->id_intree;
 
   buffer.Len = (int) round_to_int(halo->orig_mvir/(MASS_RES_OK/1000));
-
-  buffer.M_Mean200 = (float) halo->mvir*GADGET_MASS_CONVERT;
-  buffer.M_Crit200 = (float) halo->mvir*GADGET_MASS_CONVERT;
-  buffer.M_TopHat = (float) halo->mvir*GADGET_MASS_CONVERT;
+  if(halo->uparent) {
+    buffer.M_Mean200 = (float) 0.;
+    buffer.M_Crit200 = (float) 0.;
+    buffer.M_TopHat = (float) 0.;
+  } else {
+    buffer.M_Mean200 = (float) halo->M200b*GADGET_MASS_CONVERT;
+    buffer.M_Crit200 = (float) halo->M200c_all*GADGET_MASS_CONVERT;
+    buffer.M_TopHat = (float) halo->M_TopHat*GADGET_MASS_CONVERT;
+  }
   for(i=0;i<3;i++) {
     buffer.Pos[i] = (float) halo->pos[i];
     buffer.Vel[i] = (float) halo->vel[i];
@@ -616,6 +621,7 @@ void read_tree(char *filename) {
       F, F, F, F, F, F,    //x y z vx vy vz
       F, F, F, F, //Jx Jy Jz Spin
       D64, D64, D64, D64, D, D64, D64, //bfid, dfid, trid, ohid, snap, ncdfid, lpdfid
+      F, F, F, F, F, F, // Rs_Klypin M200c_all Mvir M200b M500c M2500c
     };
   enum parsetype types[NUM_INPUTS];
   void *data[NUM_INPUTS] = {&(h.scale), &(h.id), &(desc_scale),
@@ -629,6 +635,7 @@ void read_tree(char *filename) {
                             &h.breadth_first_id, &h.depth_first_id, &h.tree_root_id, 
                             &h.orig_halo_id, &h.snap_num, &h.next_coprogenitor_depthfirst_id, 
                             &h.last_progenitor_depthfirst_id,
+			    &h.Rs_Klypin, &h.M200c_all,&h.M_tophat,&h.M200b,&h.M500c,&h.M2500c,
     };
 
   for (n=0; n<NUM_INPUTS; n++) types[n] = stypes[n];
