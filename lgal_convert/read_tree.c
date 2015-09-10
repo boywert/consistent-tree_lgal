@@ -403,9 +403,9 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
     buffer.M_Crit200 = (float) 0.;
     buffer.M_TopHat = (float) 0.;
   } else {
-    buffer.M_Mean200 = (float) halo->M200b*GADGET_MASS_CONVERT;
+    buffer.M_Mean200 = (float) halo->M200c_all*GADGET_MASS_CONVERT;
     buffer.M_Crit200 = (float) halo->M200c_all*GADGET_MASS_CONVERT;
-    buffer.M_TopHat = (float) halo->M_TopHat*GADGET_MASS_CONVERT;
+    buffer.M_TopHat = (float) halo->M200c_all*GADGET_MASS_CONVERT;
   }
   for(i=0;i<3;i++) {
     buffer.Pos[i] = (float) halo->pos[i];
