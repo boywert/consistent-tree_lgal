@@ -21,7 +21,8 @@
 #define READBUFFER 1000000
 #define SCALE_FACTOR_MUL 10000
 #define GADGET_MASS_CONVERT 1.e-10
-#define MASSLIMIT 9.e7 // 4.02171e+08
+
+float MASSLIMIT = 10*MASS_RES_OK/1000;
 struct halo_tree halo_tree = {0};
 struct halo_list all_halos = {0};
 struct lgal_halo_tree lgal_halo_tree = {0};
@@ -176,7 +177,6 @@ void partition_sort_halos(int64_t min, int64_t max,
   int64_t i, si;
   struct halo tmp_h;
   if (max-min < 2) return;
-
   maxpivot = minpivot = halos[min].scale;
   for (i=min+1; i<max; i++) {
     if (halos[i].scale > maxpivot) maxpivot = halos[i].scale;
@@ -397,6 +397,7 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
     buffer.NextHaloInFOFgroup = (int)halo->nexthalo->id_intree;
 
   buffer.Len = (int) round_to_int(halo->orig_mvir/(MASS_RES_OK/1000));
+
   buffer.M_Mean200 = (float) halo->mvir*GADGET_MASS_CONVERT;
   buffer.M_Crit200 = (float) halo->mvir*GADGET_MASS_CONVERT;
   buffer.M_TopHat = (float) halo->mvir*GADGET_MASS_CONVERT;
