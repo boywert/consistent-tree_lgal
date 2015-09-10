@@ -614,7 +614,7 @@ void read_tree(char *filename) {
   float dummy;
 
   SHORT_PARSETYPE;
-  #define NUM_INPUTS 34
+  #define NUM_INPUTS 40
   enum short_parsetype stypes[NUM_INPUTS] = 
     { F, D64, F, D64, D64,    //  #scale id desc_scale desc_id num_prog
       D64, D64, D64, D64,       //   pid upid desc_pid phantom 
