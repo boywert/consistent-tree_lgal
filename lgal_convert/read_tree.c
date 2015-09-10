@@ -610,6 +610,7 @@ void read_tree(char *filename) {
   struct halo h = {0};
   int64_t desc_pid, desc_scale;
   char buffer[1024];
+  float dummy;
 
   SHORT_PARSETYPE;
   #define NUM_INPUTS 34
@@ -635,7 +636,7 @@ void read_tree(char *filename) {
                             &h.breadth_first_id, &h.depth_first_id, &h.tree_root_id, 
                             &h.orig_halo_id, &h.snap_num, &h.next_coprogenitor_depthfirst_id, 
                             &h.last_progenitor_depthfirst_id,
-			    &h.Rs_Klypin, &h.M200c_all,&h.M_TopHat,&h.M200b,&h.M500c,&h.M2500c,
+			    &dummy, &h.M200c_all,&h.M_TopHat,&h.M200b,&dummy,&dummy,
     };
 
   for (n=0; n<NUM_INPUTS; n++) types[n] = stypes[n];
