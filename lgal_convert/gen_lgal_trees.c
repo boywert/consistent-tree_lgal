@@ -65,11 +65,14 @@ void do_convert(int i, int j, int k) {
   snprintf(buffer,1024,"%s/tree_%d_%d_%d.dat",TREE_OUTBASE,i,j,k);
   printf("%s\n",buffer);
   read_tree(buffer);
-  printf("finish reading\n");
-  build_lgal_tree();
-  printf("finish building trees\n");
-  output_lgal_tree(index);
-  printf("%"PRId64" halos found in %s!\n", all_halos.num_halos,buffer);
+  if(all_halos.halos > 0) {
+    build_lgal_tree();
+    printf("finish building trees\n");
+    output_lgal_tree(index);
+    printf("%"PRId64" halos found in %s!\n", all_halos.num_halos,buffer);
+  }
+  else {
+    printf("Warning: Ignore %s\n");
+  }
   delete_tree();
-  printf("Finish delete tree\n");
 }
