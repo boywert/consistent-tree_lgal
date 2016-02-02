@@ -580,9 +580,11 @@ void build_tree() {
       last_hl = new_hl;
     }
   }
+  printf("finish loop\n");
   if (last_hl) last_hl->num_halos = i-start;
   if (!halo_tree.num_lists) return;
   last_hl = halo_tree.halo_lists;
+  printf("start qsort\n");
   qsort(last_hl->halos, last_hl->num_halos, sizeof(struct halo), sort_by_mvir);
   build_halo_index(last_hl);
   printf("finish build halo_index\n");
