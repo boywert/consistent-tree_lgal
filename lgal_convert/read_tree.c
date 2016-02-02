@@ -582,7 +582,9 @@ void build_tree() {
   }
   printf("finish loop\n");
   if (last_hl) last_hl->num_halos = i-start;
+  printf("check 1\n");
   if (!halo_tree.num_lists) return;
+  printf("check 2\n");
   last_hl = halo_tree.halo_lists;
   printf("start qsort\n");
   qsort(last_hl->halos, last_hl->num_halos, sizeof(struct halo), sort_by_mvir);
