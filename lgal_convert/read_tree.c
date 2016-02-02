@@ -161,7 +161,7 @@ struct halo_list *_lookup_or_create_scale(float scale) {
 
 void build_halo_index(struct halo_list *hl) {
   int64_t i;
-  hl->halo_lookup = check_realloc(hl->halo_lookup, 
+  hl->halo_lookup = check_realloc(hl->halo_lookup,
 				  sizeof(struct halo_index_key)*hl->num_halos, "Halo lookup index.");
   for (i=0; i<hl->num_halos; i++) {
     hl->halo_lookup[i].id = hl->halos[i].id;
@@ -188,7 +188,7 @@ void partition_sort_halos(int64_t min, int64_t max,
   si = max-1;
 #define SWAP(a,b) {tmp_h = halos[a]; halos[a] = halos[b]; \
     halos[b] = tmp_h; }
-  
+
   for (i=min; i<si; i++)
     if (halos[i].scale <= pivot) { SWAP(i, si); si--; i--; }
   if (i==si && halos[si].scale>pivot) si++;
@@ -204,14 +204,14 @@ void tree_construct(struct halo *halo, int64_t treenr, int flag) {
   if(!flag) {
     if(!haloA)
       lgal_halo_tree.root[treenr] = halo;
-    else 
+    else
       haloA->nexthalo_intree = halo;
     halo->treenr = treenr;
     halo->id_intree = lgal_halo_tree.num_halos_tree[treenr];
     lgal_halo_tree.num_halos_tree[treenr]++;
     haloA = halo;
     prog = halo->prog;
-    if(prog) 
+    if(prog)
       tree_construct(prog,treenr,flag);
     next_coprog = halo->next_coprog;
     if(next_coprog)
@@ -219,7 +219,7 @@ void tree_construct(struct halo *halo, int64_t treenr, int flag) {
   } else {
     halo->mvir = 0.;
     prog = halo->prog;
-    if(prog) 
+    if(prog)
       tree_construct(prog,treenr,flag);
     next_coprog = halo->next_coprog;
     if(next_coprog)
@@ -254,13 +254,13 @@ void movetree(int64_t tar, int64_t src) {
   lgal_halo_tree.num_halos_tree[src] = 0;
   lgal_halo_tree.lastleaf[tar]->nexthalo_intree = lgal_halo_tree.root[src];
   lgal_halo_tree.lastleaf[tar] = lgal_halo_tree.lastleaf[src];
-  
+
   cur_halo = lgal_halo_tree.root[src];
   cur_halo->treenr = tar;
   cur_halo->id_intree = count_halo;
   count_halo++;
   cur_halo = cur_halo->nexthalo_intree;
-    
+
   while(cur_halo){
     cur_halo->treenr = tar;
     cur_halo->id_intree = count_halo;
@@ -298,13 +298,13 @@ void build_lgal_tree() {
   struct halo *prog,*cur;
   struct halo *mostmassive,*prev,*temp;
   build_tree();
-  
+
   for (i=2; i<=halo_tree.num_lists; i++) {
     new_hl = &(halo_tree.halo_lists[halo_tree.num_lists-i]);
     for (j=0; j<new_hl->num_halos; j++) {
       if((prog = new_hl->halos[j].prog)) {
-	new_hl->halos[j].accu_mass += prog->accu_mass; 
-	mostmassive = prog; 
+	new_hl->halos[j].accu_mass += prog->accu_mass;
+	mostmassive = prog;
       	prog = prog->next_coprog;
       	while(prog) {
 	  if(mostmassive->orig_mvir < prog->orig_mvir)
@@ -316,7 +316,7 @@ void build_lgal_tree() {
 	if(prog != mostmassive) {
 	  for(prev = prog; prev != mostmassive; prev = prev->next_coprog);
 	  temp = mostmassive->next_coprog;
-	  if(prev != prog) 
+	  if(prev != prog)
 	    prev->next_coprog = prog;
 	  prog = mostmassive;
 	  mostmassive->next_coprog = prog->next_coprog;
@@ -336,11 +336,11 @@ void build_lgal_tree() {
     lgal_halo_tree.num_halos_tree[i] = 0;
     lgal_halo_tree.root[i] = 0;
     tree_construct(&(new_hl->halos[i]),i,0);
-    lgal_halo_tree.lastleaf[i] = haloA; 
+    lgal_halo_tree.lastleaf[i] = haloA;
   }
 
   build_parent();
-  
+
   /* Bush */
   for(i=0;i<new_hl->num_halos;i++) {
     if(lgal_halo_tree.num_halos_tree[i]) {
@@ -375,7 +375,7 @@ void build_lgal_tree() {
 }
 
 int round_to_int( float r ) {
-    return floor(r + 0.5); 
+    return floor(r + 0.5);
 }
 
 
@@ -516,15 +516,15 @@ void build_parent() {
     new_hl = &(halo_tree.halo_lists[i]);
     build_halo_index(new_hl);
     for (j=0; j<new_hl->num_halos; j++) {
-      if(new_hl->halos[j].orig_mvir >= MASSLIMIT) 
+      if(new_hl->halos[j].orig_mvir >= MASSLIMIT)
        	if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid)))
     	  if(new_hl->halos[j].parent->orig_mvir < MASSLIMIT)
-    	    new_hl->halos[j].parent = 0;  
+    	    new_hl->halos[j].parent = 0;
       else
 	new_hl->halos[j].parent = 0;
     }
   }
-  
+
   /* Make one level-parenting system - L-Galaxies */
   for (i=0; i<halo_tree.num_lists; i++) {
     new_hl = &(halo_tree.halo_lists[i]);
@@ -541,7 +541,7 @@ void build_parent() {
       }
       round++;
     } while(check);
-    
+
     for (j=0; j<new_hl->num_halos; j++) {
       new_hl->halos[j].uparent = new_hl->halos[j].parent;
       if(new_hl->halos[j].uparent) {
@@ -563,7 +563,9 @@ void build_tree() {
   struct halo_list *last_hl = 0, *new_hl;
   struct halo *desc;
   struct halo *uparent;
+  printf("start building trees\n");
   memset(&halo_tree, 0, sizeof(struct halo_tree));
+  printf("finish memset\n");
   partition_sort_halos(0, all_halos.num_halos, all_halos.halos);
   for (start=0, i=0; i<all_halos.num_halos; i++) {
     if (i>0) assert(all_halos.halos[i].scale <= all_halos.halos[i-1].scale);
@@ -571,8 +573,8 @@ void build_tree() {
     if (new_hl != last_hl) {
       new_hl->halos = &(all_halos.halos[i]);
       if (i) {
-	last_hl = lookup_scale(all_halos.halos[start].scale);
-	last_hl->num_halos = i-start;
+        last_hl = lookup_scale(all_halos.halos[start].scale);
+        last_hl->num_halos = i-start;
       }
       start = i;
       last_hl = new_hl;
@@ -583,7 +585,7 @@ void build_tree() {
   last_hl = halo_tree.halo_lists;
   qsort(last_hl->halos, last_hl->num_halos, sizeof(struct halo), sort_by_mvir);
   build_halo_index(last_hl);
-
+  printf("finish build halo_index\n");
   for (i=1; i<halo_tree.num_lists; i++) {
     last_hl = &(halo_tree.halo_lists[i-1]);
     new_hl = &(halo_tree.halo_lists[i]);
@@ -617,11 +619,11 @@ void read_tree(char *filename) {
 
   SHORT_PARSETYPE;
   #define NUM_INPUTS 40
-  enum short_parsetype stypes[NUM_INPUTS] = 
+  enum short_parsetype stypes[NUM_INPUTS] =
     { F, D64, F, D64, D64,    //  #scale id desc_scale desc_id num_prog
-      D64, D64, D64, D64,       //   pid upid desc_pid phantom 
-      F, F, F, F, F,    //mvir orig_mvir rvir rs vrms 
-      D64, F, F,          //mmp? scale_of_last_MM vmax 
+      D64, D64, D64, D64,       //   pid upid desc_pid phantom
+      F, F, F, F, F,    //mvir orig_mvir rvir rs vrms
+      D64, F, F,          //mmp? scale_of_last_MM vmax
       F, F, F, F, F, F,    //x y z vx vy vz
       F, F, F, F, //Jx Jy Jz Spin
       D64, D64, D64, D64, D, D64, D64, //bfid, dfid, trid, ohid, snap, ncdfid, lpdfid
@@ -630,14 +632,14 @@ void read_tree(char *filename) {
   enum parsetype types[NUM_INPUTS];
   void *data[NUM_INPUTS] = {&(h.scale), &(h.id), &(desc_scale),
                             &(h.descid), &(h.num_prog), &(h.pid),
-			    &(h.upid), &(desc_pid), &(h.phantom), 
+			    &(h.upid), &(desc_pid), &(h.phantom),
 			    &(h.mvir), &(h.orig_mvir), &(h.rvir), &(h.rs), &(h.vrms),
 			    &(h.mmp), &(h.scale_of_last_MM), &(h.vmax),
-			    &(h.pos[0]), &(h.pos[1]), &(h.pos[2]), 
+			    &(h.pos[0]), &(h.pos[1]), &(h.pos[2]),
                             &(h.vel[0]), &(h.vel[1]), &(h.vel[2]),
                             &(h.J[0]), &(h.J[1]), &(h.J[2]), &h.spin,
-                            &h.breadth_first_id, &h.depth_first_id, &h.tree_root_id, 
-                            &h.orig_halo_id, &h.snap_num, &h.next_coprogenitor_depthfirst_id, 
+                            &h.breadth_first_id, &h.depth_first_id, &h.tree_root_id,
+                            &h.orig_halo_id, &h.snap_num, &h.next_coprogenitor_depthfirst_id,
                             &h.last_progenitor_depthfirst_id,
 			    &dummy, &h.M200c_all,&dummy,&dummy,&dummy,&dummy,
     };
@@ -687,4 +689,3 @@ void delete_tree(void) {
   free(lgal_halo_tree.lastleaf);
   memset(&lgal_halo_tree, 0, sizeof(struct lgal_halo_tree));
 }
-
