@@ -561,9 +561,7 @@ void build_tree() {
   struct halo_list *last_hl = 0, *new_hl;
   struct halo *desc;
   struct halo *uparent;
-  printf("start building trees\n");
   memset(&halo_tree, 0, sizeof(struct halo_tree));
-  printf("finish memset\n");
   partition_sort_halos(0, all_halos.num_halos, all_halos.halos);
   for (start=0, i=0; i<all_halos.num_halos; i++) {
     if (i>0) assert(all_halos.halos[i].scale <= all_halos.halos[i-1].scale);

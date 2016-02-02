@@ -67,7 +67,6 @@ void do_convert(int i, int j, int k) {
   read_tree(buffer);
   if(all_halos.halos > 0) {
     build_lgal_tree();
-    printf("finish building trees\n");
     output_lgal_tree(index);
     printf("%"PRId64" halos found in %s!\n", all_halos.num_halos,buffer);
     delete_tree();
