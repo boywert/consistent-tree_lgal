@@ -415,7 +415,7 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
   }
   buffer.Vmax = (float) halo->vmax;
   if(buffer.Vmax == 0.)
-    printf("Vmax = 0.\n");
+    printf("Vmax = 0.\n",buffer.Vmax);
   buffer.VelDisp = (float) halo->vrms;
   buffer.MostBoundID = (long long) 0;
   buffer.SnapNum = (int) output_numbers[halo->snap_num];
@@ -532,12 +532,12 @@ void build_parent() {
     do {
       check = 0;
       for (j=0; j<new_hl->num_halos; j++) {
-        if(new_hl->halos[j].parent) {
-          while(new_hl->halos[j].parent->parent) {
-            check = 1;
-            new_hl->halos[j].parent = new_hl->halos[j].parent->parent;
-          }
-        }
+	if(new_hl->halos[j].parent) {
+	  while(new_hl->halos[j].parent->parent) {
+	    check = 1;
+	    new_hl->halos[j].parent = new_hl->halos[j].parent->parent;
+	  }
+	}
       }
       round++;
     } while(check);
@@ -545,12 +545,12 @@ void build_parent() {
     for (j=0; j<new_hl->num_halos; j++) {
       new_hl->halos[j].uparent = new_hl->halos[j].parent;
       if(new_hl->halos[j].uparent) {
-        if(!new_hl->halos[j].uparent->nexthalo)
-        new_hl->halos[j].uparent->nexthalo = &(new_hl->halos[j]);
-        else {
-          new_hl->halos[j].nexthalo = new_hl->halos[j].uparent->nexthalo;
-          new_hl->halos[j].uparent->nexthalo = &(new_hl->halos[j]);
-        }
+	if(!new_hl->halos[j].uparent->nexthalo)
+	  new_hl->halos[j].uparent->nexthalo = &(new_hl->halos[j]);
+	else {
+	  new_hl->halos[j].nexthalo = new_hl->halos[j].uparent->nexthalo;
+	  new_hl->halos[j].uparent->nexthalo = &(new_hl->halos[j]);
+	}
       }
     }
   }
@@ -563,7 +563,9 @@ void build_tree() {
   struct halo_list *last_hl = 0, *new_hl;
   struct halo *desc;
   struct halo *uparent;
+  printf("start building trees\n");
   memset(&halo_tree, 0, sizeof(struct halo_tree));
+  printf("finish memset\n");
   partition_sort_halos(0, all_halos.num_halos, all_halos.halos);
   for (start=0, i=0; i<all_halos.num_halos; i++) {
     if (i>0) assert(all_halos.halos[i].scale <= all_halos.halos[i-1].scale);
@@ -588,19 +590,19 @@ void build_tree() {
     new_hl = &(halo_tree.halo_lists[i]);
     for (j=0; j<new_hl->num_halos; j++) {
       if(new_hl->halos[j].orig_mvir >= MASSLIMIT){
-        if((new_hl->halos[j].desc = lookup_halo_in_list(last_hl, (int64_t) new_hl->halos[j].descid)))
-        if(new_hl->halos[j].desc->orig_mvir < MASSLIMIT)
-        new_hl->halos[j].desc = 0;
+	if((new_hl->halos[j].desc = lookup_halo_in_list(last_hl, (int64_t) new_hl->halos[j].descid)))
+	  if(new_hl->halos[j].desc->orig_mvir < MASSLIMIT)
+	    new_hl->halos[j].desc = 0;
       }
     }
     qsort(new_hl->halos, new_hl->num_halos, sizeof(struct halo), sort_by_desc);
     build_halo_index(new_hl);
     for (j=0; j<new_hl->num_halos; j++) {
       if(new_hl->halos[j].orig_mvir >= MASSLIMIT) {
-        if ((desc = new_hl->halos[j].desc)) {
-          new_hl->halos[j].next_coprog = desc->prog;
-          desc->prog = &(new_hl->halos[j]);
-        }
+    	if ((desc = new_hl->halos[j].desc)) {
+    	  new_hl->halos[j].next_coprog = desc->prog;
+    	  desc->prog = &(new_hl->halos[j]);
+    	}
       }
     }
   }
@@ -664,7 +666,7 @@ void read_tree(char *filename) {
   }
   fclose(input);
 
-  printf("Finish reading %s nhalo = %" PRId64 "\n",filename,all_halos.halos);
+  printf("Finish reading %s, nhalo = %"PRId64"\n",filename, all_halos.num_halos);
   all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*all_halos.num_halos, "Allocating Halos.");
 }
 

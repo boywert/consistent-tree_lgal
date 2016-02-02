@@ -70,9 +70,10 @@ void do_convert(int i, int j, int k) {
     printf("finish building trees\n");
     output_lgal_tree(index);
     printf("%"PRId64" halos found in %s!\n", all_halos.num_halos,buffer);
+    delete_tree();
   }
   else {
     printf("Warning: Ignore %s\n",buffer);
   }
-  delete_tree();
+
 }
