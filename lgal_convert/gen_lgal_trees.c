@@ -72,7 +72,7 @@ void do_convert(int i, int j, int k) {
     printf("%"PRId64" halos found in %s!\n", all_halos.num_halos,buffer);
   }
   else {
-    printf("Warning: Ignore %s\n");
+    printf("Warning: Ignore %s\n",buffer);
   }
   delete_tree();
 }
