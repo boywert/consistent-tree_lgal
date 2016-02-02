@@ -72,7 +72,8 @@ void do_convert(int i, int j, int k) {
     delete_tree();
   }
   else {
-    printf("Warning: Ignore %s\n",buffer);
+    printf("Warning: Ignore %s\nGenerating an 0 0 file\n",buffer);
+    output_lgal_tree(index);
   }
 
 }
