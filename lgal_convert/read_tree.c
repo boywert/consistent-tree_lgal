@@ -414,8 +414,6 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
     buffer.Spin[i] = (float) (halo->J[i]/halo->mvir);
   }
   buffer.Vmax = (float) halo->vmax;
-  if(buffer.Vmax == 0.)
-    printf("Vmax = 0.\n",buffer.Vmax);
   buffer.VelDisp = (float) halo->vrms;
   buffer.MostBoundID = (long long) 0;
   buffer.SnapNum = (int) output_numbers[halo->snap_num];
