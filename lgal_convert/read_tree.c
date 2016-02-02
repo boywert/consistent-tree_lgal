@@ -671,7 +671,7 @@ void read_tree(char *filename) {
   }
   fclose(input);
 
-  printf("Finish reading %s\n",filename);
+  printf("Finish reading nhalo = %s nhalo = %" PRId64 "\n",filename,all_halos.halos);
   all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*all_halos.num_halos, "Allocating Halos.");
 }
 
