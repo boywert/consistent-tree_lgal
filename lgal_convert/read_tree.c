@@ -650,7 +650,7 @@ void read_tree(char *filename) {
     h.uparent = 0;
     h.nexthalo = 0;
     h.nexthalo_intree = 0;
-    // h.mvir = h.orig_mvir;
+    h.mvir = h.orig_mvir;
     h.accu_mass = h.mvir;
 
     if (!(all_halos.num_halos % READBUFFER)) {
