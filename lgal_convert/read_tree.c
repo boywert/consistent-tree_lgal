@@ -523,7 +523,8 @@ void build_parent() {
 	    new_hl->halos[j].parent = 0;
 	  }
 	  else
-	    printf("\t Prog MORE than mass cut %" PRId64"\n",new_hl->halos[j].id);
+	    printf("\t Prog MORE than mass cut %" PRId64"\n",new_hl->halos[j].parent->id);
+	  
 	}
       }
       else
