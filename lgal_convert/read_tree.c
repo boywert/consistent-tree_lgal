@@ -275,17 +275,17 @@ void movetree(int64_t tar, int64_t src) {
 
 void create_bush(struct halo *halo,int64_t treenr) {
   struct halo *uparent;
-  printf("this halo id %"PRId64" tree: %d\n",halo->id,halo->treenr);
+  //printf("this halo id %"PRId64" tree: %d\n",halo->id,halo->treenr);
   if((uparent = halo->uparent))
     halo = uparent;
   if(halo->orig_mvir > MASSLIMIT) {
-    printf("moving uparent for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
+    //printf("moving uparent for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
     movetree(treenr,halo->treenr);
   }
   halo = halo->nexthalo;
   while(halo) {
     if(halo->orig_mvir > MASSLIMIT) {
-      printf("moving nexthalo for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
+      //printf("moving nexthalo for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
       movetree(treenr,halo->treenr);
     }
     halo = halo->nexthalo;
@@ -515,9 +515,15 @@ void build_parent() {
     build_halo_index(new_hl);
     for (j=0; j<new_hl->num_halos; j++) {
       if(new_hl->halos[j].orig_mvir >= MASSLIMIT) {
-       	if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid))) 
+       	if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid))) {
     	  if(new_hl->halos[j].parent->orig_mvir < MASSLIMIT) 
 	    new_hl->halos[j].parent = 0;
+	}
+	else {
+	  if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].upid)))
+	    if(new_hl->halos[j].parent->orig_mvir < MASSLIMIT) 
+	      new_hl->halos[j].parent = 0;
+	}
       }
       else
 	new_hl->halos[j].parent = 0;
@@ -655,9 +661,10 @@ void read_tree(char *filename) {
     if (!(all_halos.num_halos % READBUFFER)) {
       all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+READBUFFER), "Allocating Halos.");
     }
-    all_halos.halos[all_halos.num_halos] = h;
-    all_halos.num_halos++;
-
+    if(h.orig_mvir >= MASSLIMIT) {
+      all_halos.halos[all_halos.num_halos] = h;
+      all_halos.num_halos++;
+    }
   }
   fclose(input);
 
