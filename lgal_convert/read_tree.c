@@ -246,7 +246,7 @@ void movetree(int64_t tar, int64_t src) {
   if(tar == src) return;
   if(tar > src) {
     printf("something is weird, tar %" PRId64 " src %" PRId64 "\n",tar,src);
-    exit(1);
+    // exit(1);
   }
   printf("tar = %"PRId64" src = %"PRId64"\n",tar,src);
   count_halo = lgal_halo_tree.num_halos_tree[tar];
@@ -521,8 +521,6 @@ void build_parent() {
       }
       else
 	new_hl->halos[j].parent = 0;
-      if(new_hl->halos[j].parent)
-      	printf("Not orphan %" PRId64"\n",new_hl->halos[j].parent->id);
     }
   }
 
