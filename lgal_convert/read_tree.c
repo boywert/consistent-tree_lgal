@@ -275,7 +275,7 @@ void movetree(int64_t tar, int64_t src) {
 
 void create_bush(struct halo *halo,int64_t treenr) {
   struct halo *uparent;
-  if(halo->id == 62244094 )
+  if(halo->id == 62244094)
     printf("this halo id %"PRId64" tree: %d\n",halo->id,halo->treenr);
   if((uparent = halo->uparent))
     halo = uparent;
@@ -663,6 +663,8 @@ void read_tree(char *filename) {
       all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+READBUFFER), "Allocating Halos.");
     }
     if(h.orig_mvir >= MASSLIMIT) {
+      if(h.id == 62244094)
+	printf("this halo id %"PRId64"\n",h.id);
       all_halos.halos[all_halos.num_halos] = h;
       all_halos.num_halos++;
     }
