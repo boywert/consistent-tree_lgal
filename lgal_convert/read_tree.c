@@ -638,7 +638,7 @@ void read_tree(char *filename) {
                             &h.last_progenitor_depthfirst_id,
 			    &dummy, &h.M200c_all,&dummy,&dummy,&dummy,&dummy,
     };
-
+  printf("%" PRId64 " %" PRId64"\n",h.id,h.upid);
   for (n=0; n<NUM_INPUTS; n++) types[n] = stypes[n];
   input = check_fopen(filename, "r");
   while (fgets(buffer, 1024, input)) {
