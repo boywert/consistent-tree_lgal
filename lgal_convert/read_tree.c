@@ -519,11 +519,11 @@ void build_parent() {
        	if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid))) {
 	  printf("\t Found host %" PRId64"\n",new_hl->halos[j].parent->id);
     	  if(new_hl->halos[j].parent->orig_mvir < MASSLIMIT) {
-	    printf("\t Prog More than mass cut %" PRId64"\n",new_hl->halos[j].id);
+	    printf("\t Prog LESS than mass cut %" PRId64"\n",new_hl->halos[j].id);
 	    new_hl->halos[j].parent = 0;
 	  }
 	  else
-	    printf("\t Prog LESS than mass cut %" PRId64"\n",new_hl->halos[j].id);
+	    printf("\t Prog MORE than mass cut %" PRId64"\n",new_hl->halos[j].id);
 	}
       }
       else
