@@ -22,8 +22,7 @@
 #define SCALE_FACTOR_MUL 10000
 #define GADGET_MASS_CONVERT 1.e-10
 
-#define MASSLIMIT 2000*MASS_RES_OK/1000
-
+#define MASSLIMIT 20000*MASS_RES_OK/1000
 struct halo_tree halo_tree = {0};
 struct halo_list all_halos = {0};
 struct lgal_halo_tree lgal_halo_tree = {0};
@@ -663,8 +662,6 @@ void read_tree(char *filename) {
       all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+READBUFFER), "Allocating Halos.");
     }
     if(h.orig_mvir >= MASSLIMIT) {
-      if(h.id == 62244094)
-	printf("this halo id %"PRId64"\n",h.id);
       all_halos.halos[all_halos.num_halos] = h;
       all_halos.num_halos++;
     }
