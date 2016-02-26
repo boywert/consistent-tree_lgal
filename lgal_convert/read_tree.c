@@ -658,6 +658,7 @@ void read_tree(char *filename) {
     h.nexthalo_intree = 0;
     h.mvir = h.orig_mvir;
     h.accu_mass = h.mvir;
+    h.treenr = -1;
     if (!(all_halos.num_halos % READBUFFER)) {
       all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+READBUFFER), "Allocating Halos.");
     }
