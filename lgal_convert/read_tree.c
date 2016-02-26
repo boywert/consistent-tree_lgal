@@ -246,7 +246,7 @@ void movetree(int64_t tar, int64_t src) {
   if(tar == src) return;
   if(tar > src) {
     printf("something is weird, tar %" PRId64 " src %" PRId64 "\n",tar,src);
-    // exit(1);
+    exit(1);
   }
   printf("tar = %"PRId64" src = %"PRId64"\n",tar,src);
   count_halo = lgal_halo_tree.num_halos_tree[tar];
@@ -275,17 +275,17 @@ void movetree(int64_t tar, int64_t src) {
 
 void create_bush(struct halo *halo,int64_t treenr) {
   struct halo *uparent;
-  // printf("this halo id %"PRId64" tree: %d\n",halo->id,halo->treenr);
+  printf("this halo id %"PRId64" tree: %d\n",halo->id,halo->treenr);
   if((uparent = halo->uparent))
     halo = uparent;
   if(halo->orig_mvir > MASSLIMIT) {
-    // printf("moving uparent for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
+    printf("moving uparent for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
     movetree(treenr,halo->treenr);
   }
   halo = halo->nexthalo;
   while(halo) {
     if(halo->orig_mvir > MASSLIMIT) {
-      // printf("moving nexthalo for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
+      printf("moving nexthalo for hid:%" PRId64 ": %d scale %f mass %f\n",halo->id, halo->treenr,halo->scale,halo->mvir);
       movetree(treenr,halo->treenr);
     }
     halo = halo->nexthalo;
