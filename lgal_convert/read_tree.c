@@ -518,12 +518,13 @@ void build_parent() {
        	if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid))) {
     	  if(new_hl->halos[j].parent->orig_mvir < MASSLIMIT) 
 	    new_hl->halos[j].parent = 0;
-	  printf("Not orphan %" PRId64"\n",new_hl->halos[j].parent->id);
+	  if(new_hl->halos[j].parent)
+	    printf("Not orphan %" PRId64"\n",new_hl->halos[j].parent->id);
 	}
       else
 	new_hl->halos[j].parent = 0;
-      if(new_hl->halos[j].parent)
-	printf("Not orphan %" PRId64"\n",new_hl->halos[j].parent->id);
+      /* if(new_hl->halos[j].parent) */
+      /* 	printf("Not orphan %" PRId64"\n",new_hl->halos[j].parent->id); */
     }
   }
 
