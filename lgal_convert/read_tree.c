@@ -520,6 +520,7 @@ void build_parent() {
     	    new_hl->halos[j].parent = 0;
       else
 	new_hl->halos[j].parent = 0;
+      printf("%" PRId64 " %" PRId64"\n",new_hl->halos[j].ID,new_hl->halos[j].parent->ID);
     }
   }
 
@@ -651,7 +652,6 @@ void read_tree(char *filename) {
     h.nexthalo_intree = 0;
     h.mvir = h.orig_mvir;
     h.accu_mass = h.mvir;
-    printf("%" PRId64 " %" PRId64"\n",h.id,h.upid);
     if (!(all_halos.num_halos % READBUFFER)) {
       all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+READBUFFER), "Allocating Halos.");
     }
