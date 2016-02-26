@@ -504,9 +504,9 @@ void output_lgal_tree(int filenr) {
 }
 
 void build_parent() {
-  int64_t i, j, start;
+  int64_t i, j;
   int check,round;
-  struct halo_list *last_hl = 0, *new_hl;
+  struct halo_list  *new_hl;
 
   for (i=0; i<halo_tree.num_lists; i++) {
     new_hl = &(halo_tree.halo_lists[i]);
