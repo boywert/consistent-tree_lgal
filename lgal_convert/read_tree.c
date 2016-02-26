@@ -638,7 +638,6 @@ void read_tree(char *filename) {
                             &h.last_progenitor_depthfirst_id,
 			    &dummy, &h.M200c_all,&dummy,&dummy,&dummy,&dummy,
     };
-  printf("%" PRId64 " %" PRId64"\n",h.id,h.upid);
   for (n=0; n<NUM_INPUTS; n++) types[n] = stypes[n];
   input = check_fopen(filename, "r");
   while (fgets(buffer, 1024, input)) {
@@ -652,7 +651,7 @@ void read_tree(char *filename) {
     h.nexthalo_intree = 0;
     h.mvir = h.orig_mvir;
     h.accu_mass = h.mvir;
-
+    printf("%" PRId64 " %" PRId64"\n",h.id,h.upid);
     if (!(all_halos.num_halos % READBUFFER)) {
       all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*(all_halos.num_halos+READBUFFER), "Allocating Halos.");
     }
