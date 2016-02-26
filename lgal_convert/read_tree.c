@@ -22,7 +22,7 @@
 #define SCALE_FACTOR_MUL 10000
 #define GADGET_MASS_CONVERT 1.e-10
 
-#define MASSLIMIT 20000*MASS_RES_OK/1000
+#define MASSLIMIT 20*MASS_RES_OK/1000
 struct halo_tree halo_tree = {0};
 struct halo_list all_halos = {0};
 struct lgal_halo_tree lgal_halo_tree = {0};
