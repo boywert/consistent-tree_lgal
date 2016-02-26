@@ -562,10 +562,10 @@ void build_parent() {
 
 void build_tree() {
   int64_t i, j, start;
-  int check,round;
+  // int check,round;
   struct halo_list *last_hl = 0, *new_hl;
   struct halo *desc;
-  struct halo *uparent;
+  // struct halo *uparent;
   memset(&halo_tree, 0, sizeof(struct halo_tree));
   partition_sort_halos(0, all_halos.num_halos, all_halos.halos);
   for (start=0, i=0; i<all_halos.num_halos; i++) {
