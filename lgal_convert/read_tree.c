@@ -275,7 +275,8 @@ void movetree(int64_t tar, int64_t src) {
 
 void create_bush(struct halo *halo,int64_t treenr) {
   struct halo *uparent;
-  //printf("this halo id %"PRId64" tree: %d\n",halo->id,halo->treenr);
+  if(halo->id == 62244094 )
+    printf("this halo id %"PRId64" tree: %d\n",halo->id,halo->treenr);
   if((uparent = halo->uparent))
     halo = uparent;
   if(halo->orig_mvir > MASSLIMIT) {
