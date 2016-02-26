@@ -520,8 +520,8 @@ void build_parent() {
     	    new_hl->halos[j].parent = 0;
       else
 	new_hl->halos[j].parent = 0;
-      if(!new_hl->halos[j].parent)
-	printf("%" PRId64 " %" PRId64"\n",new_hl->halos[j].id,new_hl->halos[j].parent->id);
+      /* if(new_hl->halos[j].parent) */
+      /* 	printf("%" PRId64 " %" PRId64"\n",new_hl->halos[j].id,new_hl->halos[j].parent->id); */
     }
   }
 
