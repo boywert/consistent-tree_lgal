@@ -274,7 +274,6 @@ void movetree(int64_t tar, int64_t src) {
 
 void create_bush(struct halo *halo,int64_t treenr) {
   struct halo *uparent;
-  return;
   if((uparent = halo->uparent))
     halo = uparent;
   if((halo->orig_mvir > MASSLIMIT) && (halo->treenr > -1)) {
@@ -295,7 +294,7 @@ void build_lgal_tree() {
   int64_t i,j,count_halo;
   struct halo_list *new_hl;
   struct halo *prog,*cur;
-  struct halo *mostmassive,*prev,*temp;
+  struct halo *mostmassive,*prev_massive,*first,*last;
   build_tree();
 
   for (i=2; i<=halo_tree.num_lists; i++) {
@@ -304,23 +303,31 @@ void build_lgal_tree() {
       if((prog = new_hl->halos[j].prog)) {
 	new_hl->halos[j].accu_mass += prog->accu_mass;
 	mostmassive = prog;
+	prev_massive = 0;
+	last = prog;
       	prog = prog->next_coprog;
       	while(prog) {
-	  if(mostmassive->orig_mvir < prog->orig_mvir)
+	  if(mostmassive->orig_mvir < prog->orig_mvir) {
+	    prev_massive = last;
 	    mostmassive = prog;
+	  }
       	  new_hl->halos[j].accu_mass += prog->accu_mass;
+	  last = prog;
 	  prog = prog->next_coprog;
       	}
-	prog = new_hl->halos[j].prog;
-	if(prog != mostmassive) {
-	  for(prev = prog; prev != mostmassive; prev = prev->next_coprog);
-	  temp = mostmassive->next_coprog;
-	  if(prev != prog)
-	    prev->next_coprog = prog;
-	  prog = mostmassive;
-	  mostmassive->next_coprog = prog->next_coprog;
-	  prog->next_coprog = temp;
-	}
+	first = new_hl->halos[j].prog;
+	new_hl->halos[j].prog = mostmassive;
+	prev_massive->next_coprog = 0;
+	last->next_coprog = first;
+	/* if(prog != mostmassive) { */
+	/*   for(prev = prog; prev != mostmassive; prev = prev->next_coprog) */
+	/*     temp = mostmassive->next_coprog; */
+	/*   if(prev != prog) */
+	/*     prev->next_coprog = prog; */
+	/*   prog = mostmassive; */
+	/*   mostmassive->next_coprog = prog->next_coprog; */
+	/*   prog->next_coprog = temp; */
+	/* } */
       }
     }
   }
