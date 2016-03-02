@@ -338,7 +338,7 @@ void build_lgal_tree() {
     lgal_halo_tree.lastleaf[i] = haloA;
   }
 
-  build_parent();
+  // build_parent();
 
   /* Bush */
   for(i=0;i<new_hl->num_halos;i++) {
