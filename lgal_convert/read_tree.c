@@ -316,9 +316,13 @@ void build_lgal_tree() {
 	  prog = prog->next_coprog;
       	}
 	first = new_hl->halos[j].prog;
-	new_hl->halos[j].prog = mostmassive;
-	prev_massive->next_coprog = 0;
-	last->next_coprog = first;
+	if(first != mostmassive) {
+	  new_hl->halos[j].prog = mostmassive;
+	  if(prev_massive)
+	    prev_massive->next_coprog = 0;
+	  if(last != first)
+	    last->next_coprog = first;
+	}
 	/* if(prog != mostmassive) { */
 	/*   for(prev = prog; prev != mostmassive; prev = prev->next_coprog) */
 	/*     temp = mostmassive->next_coprog; */
@@ -345,7 +349,7 @@ void build_lgal_tree() {
     lgal_halo_tree.lastleaf[i] = haloA;
   }
 
-  // build_parent();
+  build_parent();
 
   /* Bush */
   for(i=0;i<new_hl->num_halos;i++) {
