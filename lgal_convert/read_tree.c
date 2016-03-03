@@ -354,14 +354,14 @@ void build_lgal_tree() {
   /* Bush */
   for(i=0;i<new_hl->num_halos;i++) {
     if(lgal_halo_tree.num_halos_tree[i]) {
-        cur = lgal_halo_tree.root[i];
-	// printf("operating from %"PRId64"\n",i);
-	create_bush(cur, i);
+      cur = lgal_halo_tree.root[i];
+      // printf("operating from %"PRId64"\n",i);
+      create_bush(cur, i);
+      cur = cur->nexthalo_intree;
+      while(cur) {
+	create_bush(cur,i);
 	cur = cur->nexthalo_intree;
-	while(cur) {
-	  create_bush(cur,i);
-	  cur = cur->nexthalo_intree;
-	}
+      }
     }
   }
   count_halo = 0;
@@ -525,12 +525,12 @@ void build_parent() {
     build_halo_index(new_hl);
     for (j=0; j<new_hl->num_halos; j++) {
       if(new_hl->halos[j].orig_mvir >= MASSLIMIT) {
-       	if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid))) {
+       	if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].upid))) {
     	  if(new_hl->halos[j].parent->orig_mvir < MASSLIMIT) 
 	    new_hl->halos[j].parent = 0;
 	}
 	else {
-	  if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].upid)))
+	  if((new_hl->halos[j].parent = lookup_halo_in_list(new_hl, new_hl->halos[j].pid)))
 	    if(new_hl->halos[j].parent->orig_mvir < MASSLIMIT) 
 	      new_hl->halos[j].parent = 0;
 	}
@@ -544,18 +544,18 @@ void build_parent() {
   for (i=0; i<halo_tree.num_lists; i++) {
     new_hl = &(halo_tree.halo_lists[i]);
     round = 0;
-    do {
-      check = 0;
+    /* do { */
+    /*   check = 0; */
       for (j=0; j<new_hl->num_halos; j++) {
 	if(new_hl->halos[j].parent) {
 	  while(new_hl->halos[j].parent->parent) {
-	    check = 1;
+	    /* check = 1; */
 	    new_hl->halos[j].parent = new_hl->halos[j].parent->parent;
 	  }
 	}
       }
-      round++;
-    } while(check);
+    /*   round++; */
+    /* } while(check); */
 
     for (j=0; j<new_hl->num_halos; j++) {
       new_hl->halos[j].uparent = new_hl->halos[j].parent;
