@@ -103,6 +103,7 @@ struct halo *lookup_halo_in_list(struct halo_list *hl, int64_t id) {
   }
   if (hl->halo_lookup[max].id == id)
     return (&(hl->halos[hl->halo_lookup[max].index]));
+  // printf("cannot find halo ID = %"PRId64"\n",id);
   return 0;
 }
 
@@ -198,8 +199,8 @@ void partition_sort_halos(int64_t min, int64_t max,
 
 void tree_construct(struct halo *halo, int64_t treenr, int flag) {
   struct halo *prog,*next_coprog;
-  if(halo->orig_mvir < MASSLIMIT)
-    flag = 1;
+  /* if(halo->orig_mvir < MASSLIMIT) */
+  /*   flag = 1; */
   if(!flag) {
     if(!haloA)
       lgal_halo_tree.root[treenr] = halo;
@@ -247,7 +248,7 @@ void movetree(int64_t tar, int64_t src) {
     printf("something is weird, tar %" PRId64 " src %" PRId64 "\n",tar,src);
     exit(1);
   }
-  printf("tar = %"PRId64" src = %"PRId64"\n",tar,src);
+  // printf("tar = %"PRId64" src = %"PRId64"\n",tar,src);
   count_halo = lgal_halo_tree.num_halos_tree[tar];
   lgal_halo_tree.num_halos_tree[tar] +=  lgal_halo_tree.num_halos_tree[src];
   lgal_halo_tree.num_halos_tree[src] = 0;
@@ -352,6 +353,7 @@ void build_lgal_tree() {
   build_parent();
 
   /* Bush */
+  printf("Grouping trees into bushes\n");
   for(i=0;i<new_hl->num_halos;i++) {
     if(lgal_halo_tree.num_halos_tree[i]) {
       cur = lgal_halo_tree.root[i];
@@ -396,17 +398,32 @@ struct lgal_halo_data make_lgal_halo_data(struct halo *halo, int filenr) {
   memset(&buffer,-1,sizeof(struct lgal_halo_data));
   if(halo->desc)
     buffer.Descendant = (int)halo->desc->id_intree;
-  if(halo->prog)
+  if(halo->prog) {
+    if(output_numbers[halo->prog->snap_num]+1 != output_numbers[halo->snap_num]) {
+      printf("Error: wrong snapshots progs");
+    }
     buffer.FirstProgenitor = (int)halo->prog->id_intree;
-  if(halo->next_coprog)
+  }
+  if(halo->next_coprog) {
+    if(output_numbers[halo->next_coprog->snap_num] != output_numbers[halo->snap_num]) {
+      printf("Error: wrong snapshots coprogs");
+    }
     buffer.NextProgenitor = (int)halo->next_coprog->id_intree;
-  if(halo->uparent)
+  }
+  if(halo->uparent) {
+    if(output_numbers[halo->uparent->snap_num] != output_numbers[halo->snap_num]) {
+      printf("Error: wrong snapshots coprogs");
+    }
     buffer.FirstHaloInFOFgroup = (int)halo->uparent->id_intree;
-  else
+  }
+  else 
     buffer.FirstHaloInFOFgroup = (int)halo->id_intree;
-  if(halo->nexthalo)
+  if(halo->nexthalo) {
+    if(output_numbers[halo->nexthalo->snap_num] != output_numbers[halo->snap_num]) {
+      printf("Error: wrong snapshots coprogs");
+    }
     buffer.NextHaloInFOFgroup = (int)halo->nexthalo->id_intree;
-
+  }
   buffer.Len = (int) round_to_int(halo->orig_mvir/(MASS_RES_OK/1000));
   if(halo->uparent) {
     buffer.M_Mean200 = (float) 0.;
@@ -437,8 +454,9 @@ struct lgal_halo_ids_data make_lgal_halo_ids_data(struct halo *halo, int filenr)
   memset(&buffer,-1,sizeof(struct lgal_halo_ids_data));
   buffer.HaloID = (long long) halo->id;
   buffer.FileTreeNr = (long long) filenr;
-  if(halo->prog)
+  if(halo->prog) {
     buffer.FirstProgenitor = (long long) halo->prog->id;
+  }
   buffer.LastProgenitor = findlastprogenitorid(halo);
   if(halo->nexthalo)
     buffer.NextProgenitor = (long long) halo->nexthalo->id;
@@ -468,6 +486,7 @@ void output_lgal_tree(int filenr) {
   sprintf(str,"mkdir -p %s/treedata",TREE_OUTBASE);
   system(str);
   sprintf(str,"%s/treedata/trees_%03d.%d",TREE_OUTBASE,(int)output_numbers[total_outputs-1],filenr);
+  printf("Output trees files: %s\n",str);
   fp = fopen(str,"wb");
   buffer = (int) lgal_halo_tree.num_trees;
   fwrite(&buffer,sizeof(int),1,fp);
@@ -498,6 +517,7 @@ void output_lgal_tree(int filenr) {
   fwrite(&buffer,sizeof(int),1,fp);
   fclose(fp);
   sprintf(str,"%s/treedata/tree_dbids_%03d.%d",TREE_OUTBASE,(int)output_numbers[total_outputs-1],filenr);
+  printf("Output tree_dbids files: %s\n",str);
   fp = fopen(str,"wb");
   for(i=0;i<lgal_halo_tree.num_trees;i++) {
     if(lgal_halo_tree.num_halos_tree[i]) {
@@ -513,13 +533,14 @@ void output_lgal_tree(int filenr) {
     }
   }
   fclose(fp);
+  printf("Total halos: %"PRId64", Total trees: %"PRId64"\n",lgal_halo_tree.num_halos,count_tree);
 }
 
 void build_parent() {
   int64_t i, j;
   int check,round;
   struct halo_list  *new_hl;
-
+  printf("Linking host-satellite relationship\n");
   for (i=0; i<halo_tree.num_lists; i++) {
     new_hl = &(halo_tree.halo_lists[i]);
     build_halo_index(new_hl);
@@ -578,6 +599,7 @@ void build_tree() {
   struct halo_list *last_hl = 0, *new_hl;
   struct halo *desc;
   // struct halo *uparent;
+  printf("Generating progenitor-descendant relationship\n");
   memset(&halo_tree, 0, sizeof(struct halo_tree));
   partition_sort_halos(0, all_halos.num_halos, all_halos.halos);
   for (start=0, i=0; i<all_halos.num_halos; i++) {
@@ -679,7 +701,7 @@ void read_tree(char *filename) {
   }
   fclose(input);
 
-  printf("Finish reading %s, nhalo = %"PRId64"\n",filename, all_halos.num_halos);
+  printf("Finish reading %s\n",filename);
   all_halos.halos = check_realloc(all_halos.halos, sizeof(struct halo)*all_halos.num_halos, "Allocating Halos.");
 }
 

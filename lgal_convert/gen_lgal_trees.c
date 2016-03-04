@@ -66,14 +66,14 @@ void do_convert(int i, int j, int k) {
   printf("%s\n",buffer);
   read_tree(buffer);
   if(all_halos.num_halos > 0) {
+    printf("%"PRId64" halos found in %s!\n", all_halos.num_halos,buffer);
     build_lgal_tree();
     output_lgal_tree(index);
-    printf("%"PRId64" halos found in %s!\n", all_halos.num_halos,buffer);
     delete_tree();
   }
   else {
     printf("Warning: Ignore %s\nGenerating an 0 0 file\n",buffer);
     output_lgal_tree(index);
   }
-
+  printf("Done file %d\n",index);
 }
