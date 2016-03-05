@@ -248,7 +248,7 @@ void movetree(int64_t tar, int64_t src) {
     printf("something is weird, tar %" PRId64 " src %" PRId64 "\n",tar,src);
     exit(1);
   }
-  // printf("tar = %"PRId64" src = %"PRId64"\n",tar,src);
+  printf("tar = %"PRId64" src = %"PRId64"\n",tar,src);
   count_halo = lgal_halo_tree.num_halos_tree[tar];
   lgal_halo_tree.num_halos_tree[tar] +=  lgal_halo_tree.num_halos_tree[src];
   lgal_halo_tree.num_halos_tree[src] = 0;
