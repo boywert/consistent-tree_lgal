@@ -350,7 +350,7 @@ void build_lgal_tree() {
     lgal_halo_tree.lastleaf[i] = haloA;
   }
 
-
+  // build_parent();
   
   /* Bush */
   printf("Grouping trees into bushes\n");
@@ -381,7 +381,7 @@ void build_lgal_tree() {
     }
   }
   lgal_halo_tree.num_halos = count_halo;
-  build_parent();
+
   /* if(lgal_halo_tree.num_halos != count_halo) { */
   /*   printf("Missing halos\n"); exit(1); */
   /* } */
