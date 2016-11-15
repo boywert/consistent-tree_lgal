@@ -350,7 +350,7 @@ void build_lgal_tree() {
     lgal_halo_tree.lastleaf[i] = haloA;
   }
 
-  // build_parent();
+  build_parent();
   
   /* Bush */
   printf("Grouping trees into bushes\n");
